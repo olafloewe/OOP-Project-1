@@ -9,11 +9,10 @@ namespace Project_1 {
     internal class Program {
         static void Main(string[] args) {
 
-            Employee doc = new Doctor();
+            Employee doc = new Doctor("neuROlogISt", 111);
             doc.setName("John");
 
-            Console.WriteLine(doc.getName());
-
+            Console.WriteLine(doc);
 
 
             Console.ReadLine();
