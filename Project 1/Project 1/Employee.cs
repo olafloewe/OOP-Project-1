@@ -4,57 +4,57 @@ using Project_1;
 namespace Project_1 {
     public abstract class Employee {
 
-        abstract string name;
-        abstract string surName;
-        abstract string pessel;
-        abstract string username;
-        abstract string password;
+        string name;
+        string surName;
+        string pessel;
+        string username;
+        string password;
 
         public Employee() {
 
         }
 
-        private virtual void setName(string name) {
+        public virtual void setName(string name) {
             this.name = name;
         }
 
-        private virtual string getName() {
+        public virtual string getName() {
             return name;
         }
 
-        private virtual void setSurName(string surName) {
+        public virtual void setSurName(string surName) {
             this.surName = surName;
         }
 
-        private virtual string getSurName() {
+        public virtual string getSurName() {
             return surName;
         }
 
-        private virtual void setPessel(string pessel) {
+        public virtual void setPessel(string pessel) {
             this.pessel = pessel;
         }
 
-        private virtual string getPessel() {
+        public virtual string getPessel() {
             return pessel;
         }
 
-        private virtual void setUsername(string username) {
+        public virtual void setUsername(string username) {
             this.username = username;
         }
 
-        private virtual string getUsername() {
+        public virtual string getUsername() {
             return username;
         }
 
-        private virtual void setPassword(string password) {
+        public virtual void setPassword(string password) {
             this.password = password;
         }
 
-        private virtual string getPassword() {
+        public virtual string getPassword() {
             return password;
         }
 
-        private virtual void Login(string username, string password) {
+        public virtual void Login(string username, string password) {
             // TODO add login here
         }
     }

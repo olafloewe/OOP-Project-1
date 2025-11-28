@@ -8,10 +8,15 @@ using Project_1;
 namespace Project_1 {
     internal class Program {
         static void Main(string[] args) {
+
             Employee doc = new Doctor();
             doc.setName("John");
 
             Console.WriteLine(doc.getName());
+
+
+
+            Console.ReadLine();
         }
     }
 }
