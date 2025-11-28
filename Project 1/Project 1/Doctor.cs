@@ -13,9 +13,14 @@ namespace Project_1 {
         int PWZ;
         string speciality;
 
-        public Doctor(string speciality, int PWZ) {
+        public Doctor(string name, string surname, long pesel, string username, string password, string speciality, int PWZ) {
             if (!specialities.Contains(speciality.ToLower())) throw new Exception("Invalid speciality");
 
+            this.setName(name);
+            this.setSurName(surname);
+            this.setPessel(pesel);
+            this.setUsername(username);
+            this.setPassword(password);
             this.PWZ = PWZ;
             this.speciality = speciality;
         }

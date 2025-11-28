@@ -6,7 +6,7 @@ namespace Project_1 {
 
         string name;
         string surName;
-        string pessel;
+        long pessel;
         string username;
         string password;
 
@@ -30,11 +30,11 @@ namespace Project_1 {
             return surName;
         }
 
-        public virtual void setPessel(string pessel) {
+        public virtual void setPessel(long pessel) {
             this.pessel = pessel;
         }
 
-        public virtual string getPessel() {
+        public virtual long getPessel() {
             return pessel;
         }
 

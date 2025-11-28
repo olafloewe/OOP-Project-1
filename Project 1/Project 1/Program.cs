@@ -9,8 +9,7 @@ namespace Project_1 {
     internal class Program {
         static void Main(string[] args) {
 
-            Employee doc = new Doctor("neuROlogISt", 111);
-            doc.setName("John");
+            Employee doc = new Doctor("Maja","Tiny", 28052611120, "MiniMaja", "hehe", "cardiologist", 1);
 
             Console.WriteLine(doc);
 
