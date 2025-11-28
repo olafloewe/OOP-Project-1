@@ -1,6 +1,9 @@
 ﻿using System;
+using Project_1;
 
-public class Nurse {
-    public Nurse() {
+namespace Project_1 {
+    public class Nurse {
+        public Nurse() {
+        }
     }
 }

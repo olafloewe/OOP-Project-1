@@ -1,6 +1,9 @@
 ﻿using System;
+using Project_1;
 
-public class Doctor {
-    public Doctor() {
+namespace Project_1 {
+    public class Doctor : Employee {
+        public Doctor() {
+        }
     }
 }
