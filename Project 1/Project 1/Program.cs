@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.File;
 using Project_1;
 
 namespace Project_1 {
@@ -28,7 +29,7 @@ namespace Project_1 {
 
             string fileName = "hospital.json";
             string jsonString = JsonSerializer.Serialize(hospital);
-            File.WriteAllText(fileName, jsonString);
+            // File.WriteAllText(fileName, jsonString);
 
 
             Console.ReadLine();
