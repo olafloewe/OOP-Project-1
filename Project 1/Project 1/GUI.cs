@@ -16,7 +16,7 @@ namespace Project_1 {
         public static void StartMenu(){
             Dictionary<String, Delegate> link = new Dictionary<String, Delegate>();
             // create delegates for each page
-            Delegate login = new Delegate(Login);
+            Delegate login = Login;
             Delegate employeeLookUp = EmployeeLookUp;
             Delegate scheduleLookUp = ScheduleLookUp;
 
@@ -29,29 +29,11 @@ namespace Project_1 {
             SelectionPage(link);
         }
 
-        private static void Login(){
-            Console.WriteLine("Login Page");
-        }
-
-        private static void EmployeeLookUp(){
-            Console.WriteLine("Employee Lookup Page");
-        }
-
-        private static void ScheduleLookUp(){
-            Console.WriteLine("Schedule Lookup Page");
-        }
-
-        // builds a selection page
+        // builds a selection page and calls delegate
         private static void SelectionPage(Dictionary<String, Delegate> dict) {
-            
-            // print options
-            for (int i = 0; i < dict.Count() ; i++) Console.WriteLine($"{i+1}. {dict.Keys.ToArray()[i]}");
-
-            // ask for input
-            int selection = ReadInput(dict.Count());
-
-            // execute selected option
-            dict.Values.ToArray()[selection].Invoke();
+            for (int i = 0; i < dict.Count() ; i++) Console.WriteLine($"{i+1}. {dict.Keys.ToArray()[i]}"); // display options
+            int selection = ReadInput(dict.Count()); // ask for input
+            dict.Values.ToArray()[selection-1].Invoke(); // execute selected option
         }
 
         // read and return a key input stroke from the console to be used in user input for GUI
@@ -77,5 +59,24 @@ namespace Project_1 {
 
             return result;
         }
+
+        // TO BE CALLED BY DELEGATES ========================================================================================================================================== 
+
+        private static void Login(){
+            Console.Clear();
+            Console.WriteLine("Login Page");
+        }
+
+        private static void EmployeeLookUp(){
+            Console.Clear();
+            Console.WriteLine("Employee Lookup Page");
+        }
+
+        private static void ScheduleLookUp(){
+            Console.Clear();
+            Console.WriteLine("Schedule Lookup Page");
+        }
+
+        // TO BE CALLED BY DELEGATES ==========================================================================================================================================
     }
 }

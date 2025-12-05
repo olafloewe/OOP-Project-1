@@ -9,15 +9,26 @@ namespace Project_1 {
     internal class Program {
         static void Main(string[] args) {
 
+            /* TODO LIST:
+             
+            Add users
+            login system
+            serialize data
+            GUI for:
+                employee lookup
+                schedule lookup
+                add employee
+                remove employee
+                edit employee
+                add schedule
+                remove schedule
+                edit schedule 
+             admin privelage
+             
+             */
 
             Hospital hospital = new Hospital();
-
-            Employee doc = new Doctor("Maja","Tiny", 28052611120, "MiniMaja", "hehe", "cardiologist", 1);
-
-            Console.WriteLine(doc);
-
             GUI.StartMenu();
-
 
             Console.ReadLine();
         }
