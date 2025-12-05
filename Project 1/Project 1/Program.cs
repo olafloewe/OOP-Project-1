@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 using Project_1;
 
 namespace Project_1 {
     internal class Program {
+
+        // string JSONString = DataManagement.LoadData("hospitalData.json");
+
         static void Main(string[] args) {
 
             /* TODO LIST:
@@ -14,21 +18,18 @@ namespace Project_1 {
             Add users
             login system
             serialize data
-            GUI for:
-                employee lookup
-                schedule lookup
-                add employee
-                remove employee
-                edit employee
-                add schedule
-                remove schedule
-                edit schedule 
-             admin privelage
+            implement GUIs
+            admin privelage
              
              */
 
             Hospital hospital = new Hospital();
             GUI.StartMenu();
+
+            string fileName = "hospital.json";
+            string jsonString = JsonSerializer.Serialize(hospital);
+            File.WriteAllText(fileName, jsonString);
+
 
             Console.ReadLine();
         }

@@ -14,3 +14,12 @@ C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\obj\Deb
 C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\Project 1.exe.config
 C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\Project 1.exe
 C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\Project 1.pdb
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\System.Text.Json.dll
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\System.Memory.dll
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\System.IO.Pipelines.dll
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\System.ValueTuple.dll
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\obj\Debug\Project 1.csproj.SuggestedBindingRedirects.cache
+C:\Users\Merito\source\repos\olafloewe\OOP-Project-1\Project 1\Project 1\obj\Debug\Project 1.csproj.Up2Date

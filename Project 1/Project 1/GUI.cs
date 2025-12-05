@@ -62,9 +62,26 @@ namespace Project_1 {
 
         // TO BE CALLED BY DELEGATES ========================================================================================================================================== 
 
+        // TODO implement GUI pages
+
         private static void Login(){
             Console.Clear();
             Console.WriteLine("Login Page");
+        }
+
+        private static void EmployeeAdd(){
+            Console.Clear();
+            Console.WriteLine("Employee Add Page");
+        }
+
+        private static void EmployeeRemove(){
+            Console.Clear();
+            Console.WriteLine("Employee Remove Page");
+        }
+
+        private static void EmployeeEdit(){
+            Console.Clear();
+            Console.WriteLine("Employee Edit Page");
         }
 
         private static void EmployeeLookUp(){
@@ -72,10 +89,18 @@ namespace Project_1 {
             Console.WriteLine("Employee Lookup Page");
         }
 
+        private static void ScheduleEdit(){
+            Console.Clear();
+            Console.WriteLine("Schedule Edit Page");
+            // DUTY ADD 
+            // DUTY REMOVE
+        }
+
         private static void ScheduleLookUp(){
             Console.Clear();
             Console.WriteLine("Schedule Lookup Page");
         }
+
 
         // TO BE CALLED BY DELEGATES ==========================================================================================================================================
     }
