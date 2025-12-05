@@ -9,9 +9,14 @@ namespace Project_1 {
     internal class Program {
         static void Main(string[] args) {
 
+
+            Hospital hospital = new Hospital();
+
             Employee doc = new Doctor("Maja","Tiny", 28052611120, "MiniMaja", "hehe", "cardiologist", 1);
 
             Console.WriteLine(doc);
+
+            GUI.StartMenu();
 
 
             Console.ReadLine();

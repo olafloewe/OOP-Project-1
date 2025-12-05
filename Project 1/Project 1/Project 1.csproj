@@ -43,12 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-	  <Compile Include="Program.cs" />
-	  <Compile Include="Employee.cs" />
-	  <Compile Include="Nurse.cs" />
-	  <Compile Include="Doctor.cs" />
-	  <Compile Include="Administrator.cs" />
-	  <Compile Include="Duty.cs" />
+    <Compile Include="GUI.cs" />
+    <Compile Include="Hospital.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Employee.cs" />
+    <Compile Include="Nurse.cs" />
+    <Compile Include="Doctor.cs" />
+    <Compile Include="Administrator.cs" />
+    <Compile Include="Duty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
