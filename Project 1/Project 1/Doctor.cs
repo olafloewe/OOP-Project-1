@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Project_1;
 
 namespace Project_1 {
+    [Serializable]
     public class Doctor : Employee {
 
         string[] specialities = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };

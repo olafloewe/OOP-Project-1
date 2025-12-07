@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Project_1 {
+    [Serializable]
     internal class GUI {
 
         private delegate void Delegate();
