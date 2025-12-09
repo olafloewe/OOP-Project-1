@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace Project_1 {
     internal class GUI {
 
         private delegate void Delegate();
+        Hospital hospital = Hospital.GetHospital();
 
         public GUI() {  
         
@@ -68,6 +70,24 @@ namespace Project_1 {
         private static void Login(){
             Console.Clear();
             Console.WriteLine("Login Page");
+            
+            // request data
+            Console.Write("Username: ");
+            string userInput = Console.ReadLine();
+
+            Console.Write("Password: ");
+            string passInput = Console.ReadLine();
+
+
+            Console.WriteLine($"Input: {userInput} {passInput}");
+
+            // verify data
+            hospital.GetEmployees().ForEach(emp => {
+                Console.WriteLine(emp.ToString());
+                if (emp.Login(userInput, passInput)){
+                    Console.WriteLine("Login Successful");
+                }
+            });
         }
 
         private static void EmployeeAdd(){

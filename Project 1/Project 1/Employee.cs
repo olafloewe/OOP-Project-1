@@ -11,8 +11,12 @@ namespace Project_1 {
         string username;
         string password;
 
-        public Employee() {
-
+        public Employee(string name, string surname, long pesel, string username, string password) {
+            this.setName(name);
+            this.setSurName(surname);
+            this.setPessel(pesel);
+            this.setUsername(username);
+            this.setPassword(password);
         }
 
         public virtual void setName(string name) {
@@ -55,8 +59,10 @@ namespace Project_1 {
             return password;
         }
 
-        public virtual void Login(string username, string password) {
-            // TODO add login here
+        public virtual bool Login(string username, string password) {
+            Console.WriteLine($"Attempting login with username: {username} and password: {password}");
+            if ( username == this.username && password == this.password) return true;
+            return false;
         }
     }
 }

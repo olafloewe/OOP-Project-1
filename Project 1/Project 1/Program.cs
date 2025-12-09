@@ -25,19 +25,34 @@ namespace Project_1 {
              
              */
 
+            BinaryFormatter formatter = new BinaryFormatter();
             Hospital hospital = new Hospital();
+
+            // load data
+            try{ 
+                using (FileStream fs = new FileStream("data.txt", FileMode.Open, FileAccess.Read)){
+                    hospital = (Hospital)formatter.Deserialize(fs);
+                }
+            }catch (FileNotFoundException){
+                hospital = Hospital.GetHospital();
+            }
+
+            // hospital.AddEmployee(new Administrator("admin", "admin", 1, "admin", "admin"));
+            hospital.GetEmployees().ForEach(emp => Console.WriteLine(emp.getName()));
+
             GUI.StartMenu();
 
 
 
-            BinaryFormatter formatter = new BinaryFormatter();
 
-            using (FileStream fs = new FileStream("data.txt", FileMode.Create)){
+
+
+            // save data
+            using (FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write)){
                 formatter.Serialize(fs, hospital);
             }
 
-
-
+            // HOLD CONSOLE OPEN
             Console.ReadLine();
         }
     }

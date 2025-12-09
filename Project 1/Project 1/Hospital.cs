@@ -13,13 +13,17 @@ namespace Project_1 {
 
         public List<Employee> employees = new List<Employee>();
 
-        private Hospital() { }
+        public Hospital() { }
 
         public static Hospital GetHospital() {
             if (instance == null) {
                 instance = new Hospital();
             }
             return instance;
+        }
+
+        public List<Employee> GetEmployees() {
+            return employees;
         }
 
         public void AddEmployee(Employee emp) {
