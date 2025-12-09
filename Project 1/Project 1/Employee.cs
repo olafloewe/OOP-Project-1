@@ -60,7 +60,6 @@ namespace Project_1 {
         }
         
         public virtual bool Login(string username, string password) {
-            Console.WriteLine($"Attempting login with username: {username} and password: {password}");
             if ( username == this.username && password == this.password) return true;
             return false;
         }

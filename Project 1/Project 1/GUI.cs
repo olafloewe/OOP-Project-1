@@ -21,9 +21,6 @@ namespace Project_1 {
             Delegate employeeLookUp = EmployeeLookUp;
             Delegate scheduleLookUp = ScheduleLookUp;
 
-
-            Console.WriteLine($"emps in GUI: {hospital.GetEmployees().Count()}");
-
             // adds delegates and arguments to dictionary
             link.Add("Login", login);
             link.Add("Employee Lookup", employeeLookUp);
@@ -78,15 +75,12 @@ namespace Project_1 {
             Console.Write("Password: ");
             string passInput = Console.ReadLine();
 
-            Console.WriteLine($"Input: {userInput} {passInput}");
-
             // verify data
-            hospital.GetEmployees().ForEach(emp => Console.WriteLine(emp.getName()));
+            // hospital.GetEmployees().ForEach(emp => Console.WriteLine(emp.getName()));
 
-            Hospital.GetHospital().GetEmployees().ForEach(emp => {
-                Console.WriteLine(emp.ToString());
+            hospital.GetEmployees().ForEach(emp => {
                 if (emp.Login(userInput, passInput)){
-                    Console.WriteLine("Login Successful");
+                    Console.WriteLine($"Login as ({emp}) Successful!");
                 }
             });
         }

@@ -9,7 +9,6 @@ namespace Project_1 {
         }
 
         public override bool Login(string username, string password) {
-            Console.WriteLine("Admin logging in...");
             return base.Login(username, password);
         }
 

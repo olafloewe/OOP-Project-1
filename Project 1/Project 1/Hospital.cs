@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Project_1 {
     [Serializable]
@@ -12,6 +13,12 @@ namespace Project_1 {
         private List<Employee> employees = new List<Employee>();
 
         private Hospital() { }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext streamingContext)
+        {
+            hospital = this;
+        }
 
         public static Hospital GetHospital() {
             if (hospital == null) {

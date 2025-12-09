@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using Project_1;
 
 namespace Project_1 {
@@ -25,7 +26,6 @@ namespace Project_1 {
              
              */
 
-            
             BinaryFormatter formatter = new BinaryFormatter();
             
             // load data
@@ -37,11 +37,7 @@ namespace Project_1 {
             catch (FileNotFoundException){
                 hospital = Hospital.GetHospital();
             }
-            
-            // hospital.AddEmployee(new Administrator("admin", "admin", 1, "admin", "admin"));
-            // hospital.GetEmployees().ForEach(emp => Console.WriteLine(emp.getName()));
 
-            Console.WriteLine($"emps in MAIN: {hospital.GetEmployees().Count()}");
             GUI.StartMenu();
 
 
