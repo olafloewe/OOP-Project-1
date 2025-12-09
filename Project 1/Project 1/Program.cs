@@ -11,7 +11,7 @@ namespace Project_1 {
     [Serializable]
     internal class Program {
 
-        // string JSONString = DataManagement.LoadData("hospitalData.json");
+        private static Hospital hospital;
 
         static void Main(string[] args) {
 
@@ -26,7 +26,6 @@ namespace Project_1 {
              */
 
             
-            Hospital hospital;
             BinaryFormatter formatter = new BinaryFormatter();
             
             // load data

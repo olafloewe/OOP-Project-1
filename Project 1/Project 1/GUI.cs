@@ -10,11 +10,9 @@ namespace Project_1 {
     internal class GUI {
 
         private delegate void Delegate();
-        static Hospital hospital = Hospital.GetHospital();
+        private static Hospital hospital = Hospital.GetHospital();
 
-        public GUI() {  
-        
-        }
+        public GUI() { }
          
         public static void StartMenu(){
             Dictionary<String, Delegate> link = new Dictionary<String, Delegate>();
