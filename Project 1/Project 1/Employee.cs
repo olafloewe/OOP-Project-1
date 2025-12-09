@@ -58,7 +58,7 @@ namespace Project_1 {
         public virtual string getPassword() {
             return password;
         }
-
+        
         public virtual bool Login(string username, string password) {
             Console.WriteLine($"Attempting login with username: {username} and password: {password}");
             if ( username == this.username && password == this.password) return true;

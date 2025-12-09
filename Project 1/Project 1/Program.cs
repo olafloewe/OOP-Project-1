@@ -25,25 +25,25 @@ namespace Project_1 {
              
              */
 
+            
+            Hospital hospital;
             BinaryFormatter formatter = new BinaryFormatter();
-            Hospital hospital = new Hospital();
-
+            
             // load data
-            try{ 
+            try{
                 using (FileStream fs = new FileStream("data.txt", FileMode.Open, FileAccess.Read)){
                     hospital = (Hospital)formatter.Deserialize(fs);
                 }
-            }catch (FileNotFoundException){
+            }
+            catch (FileNotFoundException){
                 hospital = Hospital.GetHospital();
             }
-
+            
             // hospital.AddEmployee(new Administrator("admin", "admin", 1, "admin", "admin"));
-            hospital.GetEmployees().ForEach(emp => Console.WriteLine(emp.getName()));
+            // hospital.GetEmployees().ForEach(emp => Console.WriteLine(emp.getName()));
 
+            Console.WriteLine($"emps in MAIN: {hospital.GetEmployees().Count()}");
             GUI.StartMenu();
-
-
-
 
 
 

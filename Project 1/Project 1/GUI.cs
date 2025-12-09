@@ -10,7 +10,7 @@ namespace Project_1 {
     internal class GUI {
 
         private delegate void Delegate();
-        Hospital hospital = Hospital.GetHospital();
+        static Hospital hospital = Hospital.GetHospital();
 
         public GUI() {  
         
@@ -22,6 +22,9 @@ namespace Project_1 {
             Delegate login = Login;
             Delegate employeeLookUp = EmployeeLookUp;
             Delegate scheduleLookUp = ScheduleLookUp;
+
+
+            Console.WriteLine($"emps in GUI: {hospital.GetEmployees().Count()}");
 
             // adds delegates and arguments to dictionary
             link.Add("Login", login);
@@ -74,15 +77,15 @@ namespace Project_1 {
             // request data
             Console.Write("Username: ");
             string userInput = Console.ReadLine();
-
             Console.Write("Password: ");
             string passInput = Console.ReadLine();
-
 
             Console.WriteLine($"Input: {userInput} {passInput}");
 
             // verify data
-            hospital.GetEmployees().ForEach(emp => {
+            hospital.GetEmployees().ForEach(emp => Console.WriteLine(emp.getName()));
+
+            Hospital.GetHospital().GetEmployees().ForEach(emp => {
                 Console.WriteLine(emp.ToString());
                 if (emp.Login(userInput, passInput)){
                     Console.WriteLine("Login Successful");

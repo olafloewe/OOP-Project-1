@@ -8,18 +8,16 @@ using System.Threading.Tasks;
 namespace Project_1 {
     [Serializable]
     public class Hospital {
+        private static Hospital hospital;
+        private List<Employee> employees = new List<Employee>();
 
-        private static Hospital instance;
-
-        public List<Employee> employees = new List<Employee>();
-
-        public Hospital() { }
+        private Hospital() { }
 
         public static Hospital GetHospital() {
-            if (instance == null) {
-                instance = new Hospital();
+            if (hospital == null) {
+                hospital = new Hospital();
             }
-            return instance;
+            return hospital;
         }
 
         public List<Employee> GetEmployees() {
@@ -28,6 +26,11 @@ namespace Project_1 {
 
         public void AddEmployee(Employee emp) {
             employees.Add(emp);
+        }
+
+        public override string ToString()
+        {
+            return "TESTING";
         }
     }
 }

@@ -8,6 +8,11 @@ namespace Project_1 {
         public Administrator(string name, string surname, long pesel, string username, string password) : base ( name,  surname,  pesel,  username,  password){
         }
 
+        public override bool Login(string username, string password) {
+            Console.WriteLine("Admin logging in...");
+            return base.Login(username, password);
+        }
+
         public override string ToString(){
             return $"Admin: {getName()} {getSurName()}";
         }
