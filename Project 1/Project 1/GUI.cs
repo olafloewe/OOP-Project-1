@@ -24,7 +24,7 @@ namespace Project_1 {
             // adds delegates and arguments to dictionary
             link.Add("Login", login);
             link.Add("Employee Lookup", employeeLookUp);
-            link.Add("Schedule Loopup", scheduleLookUp);
+            link.Add("Schedule Lookup", scheduleLookUp);
 
             // asks user to select a page
             SelectionPage(link);
@@ -61,29 +61,11 @@ namespace Project_1 {
             return result;
         }
 
-        // TO BE CALLED BY DELEGATES ========================================================================================================================================== 
-
         // TODO implement GUI pages
 
-        private static void Login(){
-            Console.Clear();
-            Console.WriteLine("Login Page");
-            
-            // request data
-            Console.Write("Username: ");
-            string userInput = Console.ReadLine();
-            Console.Write("Password: ");
-            string passInput = Console.ReadLine();
+        // TO BE CALLED BY DELEGATES ========================================================================================================================================== 
 
-            // verify data
-            // hospital.GetEmployees().ForEach(emp => Console.WriteLine(emp.getName()));
-
-            hospital.GetEmployees().ForEach(emp => {
-                if (emp.Login(userInput, passInput)){
-                    Console.WriteLine($"Login as ({emp}) Successful!");
-                }
-            });
-        }
+        // ADMIN COMMANDS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         private static void EmployeeAdd(){
             Console.Clear();
@@ -100,9 +82,58 @@ namespace Project_1 {
             Console.WriteLine("Employee Edit Page");
         }
 
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // logs user into system, given the right data
+        private static void Login(){
+            string userInput;
+            string passInput;
+
+            // dont accept empty input
+            do{
+                Console.Clear();
+                Console.WriteLine("Login Page");
+
+                // request data
+                Console.Write("Username: ");
+                userInput = Console.ReadLine();
+                Console.Write("Password: ");
+                passInput = Console.ReadLine();
+            } while (userInput == "" || passInput == "");
+
+            // verify login data
+            hospital.GetEmployees().ForEach(emp => {
+                if (emp.Login(userInput, passInput)){
+                    Console.WriteLine($"Login as ({emp}) Successful!");
+                }
+            });
+        }
+
+        // looks up employee data based on username
         private static void EmployeeLookUp(){
-            Console.Clear();
-            Console.WriteLine("Employee Lookup Page");
+            string userInput;
+            bool found = false;
+
+            // dont accept empty input
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Employee Lookup Page");
+
+                // request data
+                Console.Write("Please enter a username: ");
+                userInput = Console.ReadLine();
+            } while (userInput == "");
+
+            // fetch employee data
+            hospital.GetEmployees().ForEach(emp => {
+                if (emp.getUsername().ToLower() == userInput.ToLower()){
+                    Console.WriteLine($"\nFound employee: {emp}");
+                    found = true;
+                }
+            });
+
+            if(!found) Console.WriteLine("\nEmployee not found.");
         }
 
         private static void ScheduleEdit(){
