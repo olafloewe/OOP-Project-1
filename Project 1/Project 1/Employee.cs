@@ -60,7 +60,7 @@ namespace Project_1 {
         }
         
         public virtual bool Login(string username, string password) {
-            if ( username == this.username && password == this.password) return true;
+            if ( username.ToLower() == this.username.ToLower() && password == this.password) return true;
             return false;
         }
     }
