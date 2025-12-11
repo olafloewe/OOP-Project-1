@@ -11,20 +11,63 @@ namespace Project_1 {
 
         private delegate void Delegate();
         private static Hospital hospital = Hospital.GetHospital();
+        private static Employee currentLogin;
 
         public GUI() { }
-         
-        public static void StartMenu(){
-            Dictionary<String, Delegate> link = new Dictionary<String, Delegate>();
+
+        // logs user into system, given the right data
+        public static void Login(){
+            string userInput;
+            string passInput;
+            Employee employee = null;
+
+            // repeat until successful login
+            do{
+                // dont accept empty input
+                do{
+                    Console.Clear();
+                    Console.WriteLine("Login Page");
+
+                    // request data
+                    Console.Write("Username: ");
+                    userInput = Console.ReadLine();
+                    Console.Write("Password: ");
+                    passInput = Console.ReadLine();
+                } while (userInput == "" || passInput == "");
+
+                // verify login data
+                hospital.GetEmployees().ForEach(emp => {
+                    if (emp.Login(userInput, passInput)){
+                        employee = emp;
+                    }
+                });
+            } while (employee == null);
+
+            currentLogin = employee;
+            StartMenu(employee);
+        }
+
+        // start menu after successful login to select options to proceed
+        private static void StartMenu(Employee emp){
+            // welcome user
+            Console.Clear();
+            Console.WriteLine($"Welcome {emp.getName()} {emp.getSurName()}({emp.GetType().Name})!\n"); // this looks better here than ToString() override
+
             // create delegates for each page
-            Delegate login = Login;
-            Delegate employeeLookUp = EmployeeLookUp;
-            Delegate scheduleLookUp = ScheduleLookUp;
+            Dictionary<String, Delegate> link = new Dictionary<String, Delegate>();
 
             // adds delegates and arguments to dictionary
-            link.Add("Login", login);
-            link.Add("Employee Lookup", employeeLookUp);
-            link.Add("Schedule Lookup", scheduleLookUp);
+            // admin commands
+            if (emp.GetType().Name.ToString().ToLower() == "administrator") {
+                link.Add("Employee Add", new Delegate(EmployeeAdd));
+                link.Add("Employee Remove", new Delegate(EmployeeRemove));
+                link.Add("Employee Edit", new Delegate(EmployeeEdit));
+                link.Add("Schedule Edit", new Delegate(ScheduleEdit));
+            }
+            // nurse and doctor commands
+            link.Add("Employee Lookup", new Delegate(EmployeeLookUp));
+            link.Add("Schedule Lookup", new Delegate(ScheduleLookUp));
+            link.Add("Log out", new Delegate(LogOut));
 
             // asks user to select a page
             SelectionPage(link);
@@ -61,10 +104,6 @@ namespace Project_1 {
             return result;
         }
 
-        // TODO implement GUI pages
-
-        // TO BE CALLED BY DELEGATES ========================================================================================================================================== 
-
         // ADMIN COMMANDS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         private static void EmployeeAdd(){
@@ -82,73 +121,100 @@ namespace Project_1 {
             Console.WriteLine("Employee Edit Page");
         }
 
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        // logs user into system, given the right data
-        private static void Login(){
+        private static void ScheduleEdit(){
             string userInput;
-            string passInput;
+            Employee employee = null;
 
-            // dont accept empty input
+            // repeat until employee found or user exits
             do{
-                Console.Clear();
-                Console.WriteLine("Login Page");
+                // dont accept empty input
+                do{
+                    Console.Clear();
+                    Console.WriteLine("Schedule Edit Page");
 
-                // request data
-                Console.Write("Username: ");
-                userInput = Console.ReadLine();
-                Console.Write("Password: ");
-                passInput = Console.ReadLine();
-            } while (userInput == "" || passInput == "");
+                    // request data
+                    Console.Write("Please enter a username: ");
+                    userInput = Console.ReadLine();
+                } while (userInput == "");
 
-            // verify login data
-            hospital.GetEmployees().ForEach(emp => {
-                if (emp.Login(userInput, passInput)){
-                    Console.WriteLine($"Login as ({emp}) Successful!");
-                }
-            });
+                // fetch employee data
+                hospital.GetEmployees().ForEach(emp => {
+                    if (emp.getUsername().ToLower() == userInput.ToLower()){
+                        Console.WriteLine($"\nFound employee: {emp}");
+                        employee = emp;
+                    }
+                });
+
+                // failed search
+                if (employee == null) Console.WriteLine("\nEmployee not found.");
+            } while (employee == null);
+
+            // TODO
+            // DUTY ADD 
+            // DUTY REMOVE
         }
+
+
+        private static void DutyAdd(Employee emp){
+            Console.Clear();
+            Console.WriteLine("Duty add Page");
+        }
+
+        private static void DutyRemove(Employee emp){
+            Console.Clear();
+            Console.WriteLine("Duty remove Page");
+        }
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         // looks up employee data based on username
         private static void EmployeeLookUp(){
             string userInput;
-            bool found = false;
+            ConsoleKey key;
+            Employee employee = null;
 
-            // dont accept empty input
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("Employee Lookup Page");
+            // repeat until employee found or user exits
+            do{
+                // dont accept empty input
+                do{
+                    // GUI element
+                    Console.Clear();
+                    Console.WriteLine("Employee Lookup Page");
 
-                // request data
-                Console.Write("Please enter a username: ");
-                userInput = Console.ReadLine();
-            } while (userInput == "");
+                    // request data
+                    Console.Write("Please enter a username: ");
+                    userInput = Console.ReadLine();
+                } while (userInput == "");
 
-            // fetch employee data
-            hospital.GetEmployees().ForEach(emp => {
-                if (emp.getUsername().ToLower() == userInput.ToLower()){
-                    Console.WriteLine($"\nFound employee: {emp}");
-                    found = true;
-                }
-            });
+                // fetch employee data
+                hospital.GetEmployees().ForEach(emp => {
+                    if (emp.getUsername().ToLower() == userInput.ToLower()){
+                        Console.WriteLine($"\nFound employee: {emp}");
+                        employee = emp;
+                    }
+                });
 
-            if(!found) Console.WriteLine("\nEmployee not found.");
-        }
+                // failed search
+                if (employee == null) Console.WriteLine("\nEmployee not found.");
 
-        private static void ScheduleEdit(){
-            Console.Clear();
-            Console.WriteLine("Schedule Edit Page");
-            // DUTY ADD 
-            // DUTY REMOVE
+                // further action
+                Console.WriteLine("\nPress 1. to search again or any other key to quit.");
+                key = Console.ReadKey().Key;
+
+            } while (key == ConsoleKey.D1);
+
+            // return to start menu
+            StartMenu(currentLogin);
         }
 
         private static void ScheduleLookUp(){
             Console.Clear();
             Console.WriteLine("Schedule Lookup Page");
         }
-
-
-        // TO BE CALLED BY DELEGATES ==========================================================================================================================================
+ 
+        // return to login page
+        private static void LogOut(){
+            Login();
+        }
     }
 }

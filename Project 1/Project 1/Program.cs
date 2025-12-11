@@ -38,7 +38,9 @@ namespace Project_1 {
                 hospital = Hospital.GetHospital();
             }
 
-            GUI.StartMenu();
+            // hospital.AddEmployee(new Nurse("Maja", "Mini", 123, "MINI", "mini"));
+
+            GUI.Login();
 
 
 
