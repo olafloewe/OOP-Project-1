@@ -40,6 +40,10 @@ namespace Project_1 {
 
             // hospital.AddEmployee(new Nurse("Maja", "Mini", 123, "MINI", "mini"));
 
+            // test all ready existing username
+            hospital.AddEmployee(new Nurse("BB", "Mini", 123, "MinI", "mini"));
+            Console.ReadLine();
+
             GUI.Login();
 
 

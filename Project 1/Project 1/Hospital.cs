@@ -32,7 +32,17 @@ namespace Project_1 {
         }
 
         public void AddEmployee(Employee emp) {
-            employees.Add(emp);
+            // check wether username is taken allready
+            try{
+                hospital.GetEmployees().ForEach(e => {
+                    if (e.getUsername().ToLower() == emp.getUsername().ToLower()) throw new Exception("Username allready taken");
+                });
+                // no exception thrown, add employee
+                employees.Add(emp);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public override string ToString()
