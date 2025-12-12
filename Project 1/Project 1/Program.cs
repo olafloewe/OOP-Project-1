@@ -19,10 +19,7 @@ namespace Project_1 {
             /* TODO LIST:
              
             Add users
-            login system
-            serialize data
             implement GUIs
-            admin privelage
              
              */
 

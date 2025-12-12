@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using Project_1;
 
 namespace Project_1 {
     [Serializable]
@@ -86,7 +82,7 @@ namespace Project_1 {
         // read and return a key input stroke from the console to be used in user input for GUI
         private static int ReadInput(int inputRange) {
             // only want selection from 1-9
-            if (inputRange > 9 || inputRange < 1) throw new Exception("Invalid selection options");
+            // if (inputRange > 9 || inputRange < 1) throw new Exception("Invalid selection options");
             char[] inputChars = new char[inputRange+1];
             
             // generate inputChars
@@ -107,21 +103,114 @@ namespace Project_1 {
             return result;
         }
 
+        // read and return a string input from the console until input is not empty
+        private static string ReadStringInput(string prompt) {
+            string input;
+            do {
+                Console.Write(prompt);
+                input = Console.ReadLine();
+            } while (input == "");
+            return input;
+        }
+
         // ADMIN COMMANDS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         private static void EmployeeAdd(){
             Console.Clear();
             Console.WriteLine("Employee Add Page");
+
+            bool usernameTaken;
+            string nameInput;
+            string surnameInput;
+            long peselInput;
+            string usernameInput;
+            string passwordInput;
+            int empTypeSelection;
+            int specialtySelection;
+            int pwzInput;
+            Employee newEmployee;
+
+            string[] employeeType = new string[] { "Administrator", "Doctor", "Nurse" };
+            string[] specialties = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };
+
+
+            // request data
+            nameInput = ReadStringInput("Please enter a employee name: ");
+            surnameInput = ReadStringInput("Please enter a employee Surname: ");
+            while (!long.TryParse(ReadStringInput("Please enter a employee pesel: "), out peselInput));
+
+            // repeat until username is unique
+            do{
+                usernameTaken = false;
+                usernameInput = ReadStringInput("Please enter a employee username: ");
+
+                // fetch employee data
+                hospital.GetEmployees().ForEach(emp => {
+                    if (emp.getUsername().ToLower() == usernameInput.ToLower()){
+                        Console.WriteLine($"\nUsername allready taken");
+                        usernameTaken = true;
+                    }
+                });                
+            } while (usernameTaken);
+
+            passwordInput = ReadStringInput("Please enter a employee password: ");
+
+            // use ReadInput() to choose employee type and specialty
+
+            Console.WriteLine("Please select employee type:\n");
+            for (int i = 0; i < employeeType.Length; i++) { 
+                Console.WriteLine($"{i+1}. {employeeType[i]}");
+            }
+            empTypeSelection = ReadInput(employeeType.Length);
+
+            switch (empTypeSelection) { 
+                case 1:
+                    newEmployee = new Administrator(nameInput, surnameInput, peselInput, usernameInput, passwordInput);
+                    break;
+                case 2:
+                    // ask doctor specific data
+                    Console.WriteLine("\nPlease select a specialty:\n");
+                    for (int i = 0; i < specialties.Length; i++){
+                        Console.WriteLine($"{i + 1}. {specialties[i]}");
+                    }
+                    specialtySelection = ReadInput(specialties.Length);
+
+                    // 7 didgit PWZ number
+                    while (!int.TryParse(ReadStringInput("\nPlease enter a PWZ number: "), out pwzInput) || pwzInput < 0 || pwzInput > 9999999);
+
+                    newEmployee = new Doctor(nameInput, surnameInput, peselInput, usernameInput, passwordInput, specialties[specialtySelection - 1], pwzInput);
+                    break;
+                case 3:
+                    newEmployee = new Nurse(nameInput, surnameInput, peselInput, usernameInput, passwordInput);
+                    break;
+                default:
+                    throw new Exception("Invalid employee type selection");
+            }
+
+            hospital.AddEmployee(newEmployee);
+
+            // confirmation before returning
+            Console.WriteLine($"Employee ({newEmployee}) added successfully, press any button to continue!");
+            Console.ReadKey();
+
+            // return to start menu
+            StartMenu(currentLogin);
         }
 
         private static void EmployeeRemove(){
             Console.Clear();
             Console.WriteLine("Employee Remove Page");
+
+            // return to start menu
+            StartMenu(currentLogin);
         }
 
         private static void EmployeeEdit(){
             Console.Clear();
             Console.WriteLine("Employee Edit Page");
+
+            // return to start menu
+            StartMenu(currentLogin);
         }
 
         private static void ScheduleEdit(){
@@ -155,17 +244,27 @@ namespace Project_1 {
             // TODO
             // DUTY ADD 
             // DUTY REMOVE 
+
+
+            // return to start menu
+            StartMenu(currentLogin);
         }
 
 
         private static void DutyAdd(Employee emp){
             Console.Clear();
             Console.WriteLine("Duty add Page");
+
+            // return to start menu
+            StartMenu(currentLogin);
         }
 
         private static void DutyRemove(Employee emp){
             Console.Clear();
             Console.WriteLine("Duty remove Page");
+
+            // return to start menu
+            StartMenu(currentLogin);
         }
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -213,18 +312,21 @@ namespace Project_1 {
         private static void ScheduleLookUp(){
             Console.Clear();
             Console.WriteLine("Schedule Lookup Page");
+
+            // return to start menu
+            StartMenu(currentLogin);
         }
  
         // return to login page
         private static void LogOut(){
-
             BinaryFormatter formatter = new BinaryFormatter();
 
-            // save data
+            // save data after logout
             using (FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write)){
                 formatter.Serialize(fs, hospital);
             }
 
+            // return to login page
             Login();
         }
     }
