@@ -65,6 +65,7 @@ namespace Project_1 {
                 link.Add("Schedule Edit", new Delegate(ScheduleEdit));
             }
             // nurse and doctor commands
+            link.Add("This months schedule", new Delegate(ThisMonthsSchedule));
             link.Add("Employee Lookup", new Delegate(EmployeeLookUp));
             link.Add("Schedule Lookup", new Delegate(ScheduleLookUp));
             link.Add("Log out", new Delegate(LogOut));
@@ -122,7 +123,8 @@ namespace Project_1 {
 
             // fetch and display employee data
             hospital.GetEmployees().ForEach(emp => {
-                Console.WriteLine($"{hospital.GetEmployees().IndexOf(emp) + 1}. {emp}");
+                // TODO incremental index display instead of index in list
+                if (emp.GetType().Name.ToString().ToLower() != "administrator") Console.WriteLine($"{hospital.GetEmployees().IndexOf(emp) + 1}. {emp}");
             });
 
             // confirmation before returning
@@ -370,6 +372,14 @@ namespace Project_1 {
         private static void ScheduleLookUp() {
             Console.Clear();
             Console.WriteLine("Schedule Lookup Page\n");
+
+            // return to start menu
+            StartMenu(currentLogin);
+        }
+
+        private static void ThisMonthsSchedule() {
+            Console.Clear();
+            Console.WriteLine("This Months Schedule Page\n");
 
             // return to start menu
             StartMenu(currentLogin);
