@@ -14,7 +14,7 @@ namespace Project_1 {
         int PWZ;
         string specialty;
 
-        public Doctor(string name, string surname, long pesel, string username, string password, string specialty, int PWZ) : base (name, surname, pesel, username, password){
+        public Doctor(string name, string surname, long pesel, string username, string password, string specialty, int PWZ) : base(name, surname, pesel, username, password) {
             if (!specialties.Contains(specialty.ToLower())) throw new Exception("Invalid specialty");
 
             this.PWZ = PWZ;
@@ -34,7 +34,7 @@ namespace Project_1 {
             duties.Add(duty);
         }
 
-        public List<Duty> DutyList() { 
+        public List<Duty> DutyList() {
             return duties;
         }
     }

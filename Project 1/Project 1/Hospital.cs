@@ -15,8 +15,7 @@ namespace Project_1 {
         private Hospital() { }
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext streamingContext)
-        {
+        private void OnDeserialized(StreamingContext streamingContext) {
             hospital = this;
         }
 
@@ -33,20 +32,31 @@ namespace Project_1 {
 
         public void AddEmployee(Employee emp) {
             // check wether username is taken allready
-            try{
+            try {
                 hospital.GetEmployees().ForEach(e => {
                     if (e.getUsername().ToLower() == emp.getUsername().ToLower()) throw new Exception("Username allready taken");
                 });
                 // no exception thrown, add employee
                 employees.Add(emp);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
         }
 
-        public override string ToString()
-        {
+        public void RemoveEmployee(Employee emp) {
+            // check wether username is taken allready
+            try {
+                hospital.GetEmployees().ForEach(e => {
+                    if (e.getUsername().ToLower() == emp.getUsername().ToLower()) {
+                        employees.Remove(e);
+                    }
+                });
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public override string ToString() {
             return "TESTING";
         }
     }

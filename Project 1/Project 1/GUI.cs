@@ -15,17 +15,17 @@ namespace Project_1 {
         public GUI() { }
 
         // logs user into system, given the right data
-        public static void Login(){
+        public static void Login() {
             string userInput;
             string passInput;
             Employee employee = null;
 
             // repeat until successful login
-            do{
+            do {
                 // dont accept empty input
-                do{
+                do {
                     Console.Clear();
-                    Console.WriteLine("Login Page");
+                    Console.WriteLine("Login Page\n");
 
                     // request data
                     Console.Write("Username: ");
@@ -36,7 +36,7 @@ namespace Project_1 {
 
                 // verify login data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.Login(userInput, passInput)){
+                    if (emp.Login(userInput, passInput)) {
                         employee = emp;
                     }
                 });
@@ -47,7 +47,7 @@ namespace Project_1 {
         }
 
         // start menu after successful login to select options to proceed
-        private static void StartMenu(Employee emp){
+        private static void StartMenu(Employee emp) {
             // welcome user
             Console.Clear();
             Console.WriteLine($"Welcome {emp.getName()} {emp.getSurName()}({emp.GetType().Name})!\n"); // this looks better here than ToString() override
@@ -58,6 +58,7 @@ namespace Project_1 {
             // adds delegates and arguments to dictionary
             // admin commands
             if (emp.GetType().Name.ToString().ToLower() == "administrator") {
+                link.Add("Employee List", new Delegate(EmployeeList));
                 link.Add("Employee Add", new Delegate(EmployeeAdd));
                 link.Add("Employee Remove", new Delegate(EmployeeRemove));
                 link.Add("Employee Edit", new Delegate(EmployeeEdit));
@@ -74,17 +75,17 @@ namespace Project_1 {
 
         // builds a selection page and calls delegate
         private static void SelectionPage(Dictionary<String, Delegate> dict) {
-            for (int i = 0; i < dict.Count() ; i++) Console.WriteLine($"{i+1}. {dict.Keys.ToArray()[i]}"); // display options
-            int selection = ReadInput(dict.Count()); // ask for input
-            dict.Values.ToArray()[selection-1].Invoke(); // execute selected option
+            for (int i = 0; i < dict.Count(); i++) Console.WriteLine($"{i + 1}. {dict.Keys.ToArray()[i]}"); // display options
+            int selection = ReadInput(dict.Count(), true); // ask for input
+            dict.Values.ToArray()[selection - 1].Invoke(); // execute selected option
         }
 
         // read and return a key input stroke from the console to be used in user input for GUI
-        private static int ReadInput(int inputRange) {
+        private static int ReadInput(int inputRange, bool keyInput = false) {
             // only want selection from 1-9
-            // if (inputRange > 9 || inputRange < 1) throw new Exception("Invalid selection options");
-            char[] inputChars = new char[inputRange+1];
-            
+            if (keyInput && inputRange > 9 || keyInput && inputRange < 1) throw new Exception("Invalid selection options");
+            char[] inputChars = new char[inputRange + 1];
+
             // generate inputChars
             for (int i = 1; i < inputChars.Length; i++) {
                 inputChars[i] = i.ToString()[0];
@@ -98,7 +99,7 @@ namespace Project_1 {
 
             // parse key to string
             int result;
-            if(!int.TryParse(key.ToString(), out result)) throw new Exception("Oops, something went wrong with parsing your int.");
+            if (!int.TryParse(key.ToString(), out result)) throw new Exception("Oops, something went wrong with parsing your int.");
 
             return result;
         }
@@ -115,9 +116,27 @@ namespace Project_1 {
 
         // ADMIN COMMANDS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        private static void EmployeeAdd(){
+        private static void EmployeeList() {
             Console.Clear();
-            Console.WriteLine("Employee Add Page");
+            Console.WriteLine("Employee List Page\n");
+
+            // fetch and display employee data
+            hospital.GetEmployees().ForEach(emp => {
+                Console.WriteLine($"{hospital.GetEmployees().IndexOf(emp) + 1}. {emp}");
+            });
+
+            // confirmation before returning
+            Console.WriteLine("\nPress any button to continue!");
+            Console.ReadKey();
+
+            // return to start menu
+            StartMenu(currentLogin);
+        }
+
+        // asks for employee data and adds them to the hospital system
+        private static void EmployeeAdd() {
+            Console.Clear();
+            Console.WriteLine("Employee Add Page\n");
 
             bool usernameTaken;
             string nameInput;
@@ -137,46 +156,45 @@ namespace Project_1 {
             // request data
             nameInput = ReadStringInput("Please enter a employee name: ");
             surnameInput = ReadStringInput("Please enter a employee Surname: ");
-            while (!long.TryParse(ReadStringInput("Please enter a employee pesel: "), out peselInput));
+            while (!long.TryParse(ReadStringInput("Please enter a employee pesel: "), out peselInput)) ;
 
             // repeat until username is unique
-            do{
+            do {
                 usernameTaken = false;
                 usernameInput = ReadStringInput("Please enter a employee username: ");
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.getUsername().ToLower() == usernameInput.ToLower()){
+                    if (emp.getUsername().ToLower() == usernameInput.ToLower()) {
                         Console.WriteLine($"\nUsername allready taken");
                         usernameTaken = true;
                     }
-                });                
+                });
             } while (usernameTaken);
 
             passwordInput = ReadStringInput("Please enter a employee password: ");
 
             // use ReadInput() to choose employee type and specialty
-
             Console.WriteLine("Please select employee type:\n");
-            for (int i = 0; i < employeeType.Length; i++) { 
-                Console.WriteLine($"{i+1}. {employeeType[i]}");
+            for (int i = 0; i < employeeType.Length; i++) {
+                Console.WriteLine($"{i + 1}. {employeeType[i]}");
             }
-            empTypeSelection = ReadInput(employeeType.Length);
+            empTypeSelection = ReadInput(employeeType.Length, true);
 
-            switch (empTypeSelection) { 
+            switch (empTypeSelection) {
                 case 1:
                     newEmployee = new Administrator(nameInput, surnameInput, peselInput, usernameInput, passwordInput);
                     break;
                 case 2:
                     // ask doctor specific data
                     Console.WriteLine("\nPlease select a specialty:\n");
-                    for (int i = 0; i < specialties.Length; i++){
+                    for (int i = 0; i < specialties.Length; i++) {
                         Console.WriteLine($"{i + 1}. {specialties[i]}");
                     }
-                    specialtySelection = ReadInput(specialties.Length);
+                    specialtySelection = ReadInput(specialties.Length, true);
 
                     // 7 didgit PWZ number
-                    while (!int.TryParse(ReadStringInput("\nPlease enter a PWZ number: "), out pwzInput) || pwzInput < 0 || pwzInput > 9999999);
+                    while (!int.TryParse(ReadStringInput("\nPlease enter a PWZ number: "), out pwzInput) || pwzInput < 0 || pwzInput > 9999999) ;
 
                     newEmployee = new Doctor(nameInput, surnameInput, peselInput, usernameInput, passwordInput, specialties[specialtySelection - 1], pwzInput);
                     break;
@@ -197,32 +215,73 @@ namespace Project_1 {
             StartMenu(currentLogin);
         }
 
-        private static void EmployeeRemove(){
+        // remove employee by username
+        private static void EmployeeRemove() {
             Console.Clear();
-            Console.WriteLine("Employee Remove Page");
+            Console.WriteLine("Employee Remove Page\n");
+
+            string userInput;
+            ConsoleKey key;
+            Employee employee = null;
+            bool confirmDelete = false;
+
+            // repeat until employee found or user exits
+            do {
+                // dont accept empty input
+                do {
+                    // GUI element
+                    Console.Clear();
+                    Console.WriteLine("Employee Remove Page\n");
+
+                    // request data
+                    Console.Write("Please enter the username of the user to be removed: ");
+                    userInput = Console.ReadLine();
+                } while (userInput == "");
+
+                // fetch employee data
+                hospital.GetEmployees().ForEach(emp => {
+                    if (emp.getUsername().ToLower() == userInput.ToLower()) {
+                        Console.WriteLine($"\nFound employee: {emp}");
+                        employee = emp;
+                    }
+                });
+
+                // failed search
+                if (employee == null) Console.WriteLine("\nEmployee not found.");
+
+                // further action
+                Console.WriteLine("\nEmployee deleted successfully, press any key to quit.");
+                key = Console.ReadKey().Key;
+                // delete employee here
+                hospital.RemoveEmployee(employee);
+                confirmDelete = true;
+
+            } while (!confirmDelete);
+
+            // return to start menu
+            if (employee == currentLogin) LogOut();
+            else
+                StartMenu(currentLogin);
+        }
+
+        private static void EmployeeEdit() {
+            Console.Clear();
+            Console.WriteLine("Employee Edit Page\n");
 
             // return to start menu
             StartMenu(currentLogin);
         }
 
-        private static void EmployeeEdit(){
-            Console.Clear();
-            Console.WriteLine("Employee Edit Page");
-
-            // return to start menu
-            StartMenu(currentLogin);
-        }
-
-        private static void ScheduleEdit(){
+        private static void ScheduleEdit() {
             string userInput;
             Employee employee = null;
 
             // repeat until employee found or user exits
-            do{
+            do {
                 // dont accept empty input
-                do{
+                do {
                     Console.Clear();
-                    Console.WriteLine("Schedule Edit Page");
+                    Console.WriteLine("Schedule Edit Page\n");
 
                     // request data
                     Console.Write("Please enter a username: ");
@@ -231,7 +290,7 @@ namespace Project_1 {
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.getUsername().ToLower() == userInput.ToLower()){
+                    if (emp.getUsername().ToLower() == userInput.ToLower()) {
                         Console.WriteLine($"\nFound employee: {emp}");
                         employee = emp;
                     }
@@ -250,18 +309,17 @@ namespace Project_1 {
             StartMenu(currentLogin);
         }
 
-
-        private static void DutyAdd(Employee emp){
+        private static void DutyAdd(Employee emp) {
             Console.Clear();
-            Console.WriteLine("Duty add Page");
+            Console.WriteLine("Duty add Page\n");
 
             // return to start menu
             StartMenu(currentLogin);
         }
 
-        private static void DutyRemove(Employee emp){
+        private static void DutyRemove(Employee emp) {
             Console.Clear();
-            Console.WriteLine("Duty remove Page");
+            Console.WriteLine("Duty remove Page\n");
 
             // return to start menu
             StartMenu(currentLogin);
@@ -270,18 +328,18 @@ namespace Project_1 {
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         // looks up employee data based on username
-        private static void EmployeeLookUp(){
+        private static void EmployeeLookUp() {
             string userInput;
             ConsoleKey key;
             Employee employee = null;
 
             // repeat until employee found or user exits
-            do{
+            do {
                 // dont accept empty input
-                do{
+                do {
                     // GUI element
                     Console.Clear();
-                    Console.WriteLine("Employee Lookup Page");
+                    Console.WriteLine("Employee Lookup Page\n");
 
                     // request data
                     Console.Write("Please enter a username: ");
@@ -290,7 +348,7 @@ namespace Project_1 {
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.getUsername().ToLower() == userInput.ToLower()){
+                    if (emp.getUsername().ToLower() == userInput.ToLower()) {
                         Console.WriteLine($"\nFound employee: {emp}");
                         employee = emp;
                     }
@@ -309,20 +367,20 @@ namespace Project_1 {
             StartMenu(currentLogin);
         }
 
-        private static void ScheduleLookUp(){
+        private static void ScheduleLookUp() {
             Console.Clear();
-            Console.WriteLine("Schedule Lookup Page");
+            Console.WriteLine("Schedule Lookup Page\n");
 
             // return to start menu
             StartMenu(currentLogin);
         }
- 
+
         // return to login page
-        private static void LogOut(){
+        private static void LogOut() {
             BinaryFormatter formatter = new BinaryFormatter();
 
             // save data after logout
-            using (FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write)){
+            using (FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write)) {
                 formatter.Serialize(fs, hospital);
             }
 
