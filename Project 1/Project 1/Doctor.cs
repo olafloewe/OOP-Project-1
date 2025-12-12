@@ -9,27 +9,27 @@ namespace Project_1 {
     [Serializable]
     public class Doctor : Employee {
 
-        string[] specialities = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };
+        string[] specialties = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };
         List<Duty> duties = new List<Duty>();
         int PWZ;
-        string speciality;
+        string specialty;
 
-        public Doctor(string name, string surname, long pesel, string username, string password, string speciality, int PWZ) : base (name, surname, pesel, username, password){
-            if (!specialities.Contains(speciality.ToLower())) throw new Exception("Invalid speciality");
+        public Doctor(string name, string surname, long pesel, string username, string password, string specialty, int PWZ) : base (name, surname, pesel, username, password){
+            if (!specialties.Contains(specialty.ToLower())) throw new Exception("Invalid specialty");
 
             this.PWZ = PWZ;
-            this.speciality = speciality;
+            this.specialty = specialty;
         }
 
         public override string ToString() {
-            return $"Doctor: {getName()} {getSurName()}, Speciality: {speciality.ToLower()}, PWZ: {PWZ}";
+            return $"Doctor: {getName()} {getSurName()}, specialty: {specialty.ToLower()}, PWZ: {PWZ}";
         }
 
         public void AddDuty(Duty duty) {
             // TODO
             // check if duty date is not overlapping with existing duties by a day
             // check if duty date is not in the past
-            // check if no same speciality doctor is on duty that day
+            // check if no same specialty doctor is on duty that day
             // check if no more than 10 duties assigned in a month
             duties.Add(duty);
         }

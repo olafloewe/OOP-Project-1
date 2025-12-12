@@ -7,14 +7,14 @@ namespace Project_1 {
 
         string name;
         string surName;
-        long pessel;
+        long pesel;
         string username;
         string password;
 
         public Employee(string name, string surname, long pesel, string username, string password) {
             this.setName(name);
             this.setSurName(surname);
-            this.setPessel(pesel);
+            this.setPesel(pesel);
             this.setUsername(username);
             this.setPassword(password);
         }
@@ -35,12 +35,12 @@ namespace Project_1 {
             return surName;
         }
 
-        public virtual void setPessel(long pessel) {
-            this.pessel = pessel;
+        public virtual void setPesel(long pesel) {
+            this.pesel = pesel;
         }
 
-        public virtual long getPessel() {
-            return pessel;
+        public virtual long getPesel() {
+            return pesel;
         }
 
         public virtual void setUsername(string username) {
