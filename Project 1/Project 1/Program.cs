@@ -35,23 +35,12 @@ namespace Project_1 {
                 }
             }
             catch (FileNotFoundException){
+                Console.WriteLine("No data file found, starting new hospital");
                 hospital = Hospital.GetHospital();
+                hospital.AddEmployee(new Administrator("admin", "admin", 0, "admin", "admin"));
             }
-
-            // hospital.AddEmployee(new Nurse("Maja", "Mini", 123, "MINI", "mini"));
-
-            // test all ready existing username
-            hospital.AddEmployee(new Nurse("BB", "Mini", 123, "MinI", "mini"));
-            Console.ReadLine();
 
             GUI.Login();
-
-
-
-            // save data
-            using (FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write)){
-                formatter.Serialize(fs, hospital);
-            }
 
             // HOLD CONSOLE OPEN
             Console.ReadLine();

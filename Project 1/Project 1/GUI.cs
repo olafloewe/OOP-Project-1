@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using Project_1;
 
 namespace Project_1 {
     [Serializable]
@@ -214,6 +217,14 @@ namespace Project_1 {
  
         // return to login page
         private static void LogOut(){
+
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            // save data
+            using (FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write)){
+                formatter.Serialize(fs, hospital);
+            }
+
             Login();
         }
     }

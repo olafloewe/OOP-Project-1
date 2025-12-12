@@ -19,47 +19,47 @@ namespace Project_1 {
             this.setPassword(password);
         }
 
-        public virtual void setName(string name) {
+        protected void setName(string name) {
             this.name = name;
         }
 
-        public virtual string getName() {
+        public string getName() {
             return name;
         }
 
-        public virtual void setSurName(string surName) {
+        protected void setSurName(string surName) {
             this.surName = surName;
         }
 
-        public virtual string getSurName() {
+        public string getSurName() {
             return surName;
         }
 
-        public virtual void setPesel(long pesel) {
+        protected void setPesel(long pesel) {
             this.pesel = pesel;
         }
 
-        public virtual long getPesel() {
+        public long getPesel() {
             return pesel;
         }
 
-        public virtual void setUsername(string username) {
+        protected void setUsername(string username) {
             this.username = username;
         }
 
-        public virtual string getUsername() {
+        public string getUsername() {
             return username;
         }
 
-        public virtual void setPassword(string password) {
+        protected void setPassword(string password) {
             this.password = password;
         }
 
-        public virtual string getPassword() {
+        public string getPassword() {
             return password;
         }
         
-        public virtual bool Login(string username, string password) {
+        public bool Login(string username, string password) {
             if ( username.ToLower() == this.username.ToLower() && password == this.password) return true;
             return false;
         }
