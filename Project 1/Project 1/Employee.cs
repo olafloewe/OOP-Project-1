@@ -62,5 +62,7 @@ namespace Project_1 {
             if (username.ToLower() == this.username.ToLower() && password == this.password) return true;
             return false;
         }
+        public virtual void AddDuty(Duty duty) {
+        }
     }
 }

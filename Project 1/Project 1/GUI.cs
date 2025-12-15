@@ -312,7 +312,6 @@ namespace Project_1 {
             Console.WriteLine("1. Add Duty\n2. Remove Duty");
             ConsoleKey input = Console.ReadKey().Key;
             
-            // TODO
             if(input == ConsoleKey.D1) DutyAdd(employee);
             if(input == ConsoleKey.D2) DutyRemove(employee);
 
@@ -326,6 +325,9 @@ namespace Project_1 {
             string yearInput;
             DateTime dutyDate;
             bool validDate = false;
+
+            if (emp.GetType().Name.ToLower() == "doctor") emp = (Doctor)emp;
+            if (emp.GetType().Name.ToLower() == "nurse") emp = (Nurse)emp;
 
             // GUI
             Console.Clear();
@@ -342,11 +344,10 @@ namespace Project_1 {
                 try {
                     DateTime.TryParse($"{dayInput}/{monthInput}/{yearInput} 00:00:00 AM", out dutyDate);
 
-                    Console.WriteLine($"\nInput: {dutyDate}");
-                    Console.WriteLine($"\nDuty added for {emp.GetUsername()} on {dutyDate} / {DateTime.Now.Date}");
-
                     if (DateTime.Now.CompareTo(dutyDate) != -1) throw new Exception("Date is not in the future");
                     validDate = true;
+                    emp.AddDuty(new Duty(dutyDate, emp));
+                    Console.WriteLine($"\nAdd duty executed sucessfully");
                 } catch (Exception e) {
                     Console.Clear();
                     Console.WriteLine("Duty add Page\n");
@@ -409,7 +410,8 @@ namespace Project_1 {
         }
 
         private static void ScheduleLookUp() {
-            Employee employee;
+            Doctor doctor;
+            Nurse nurse;
             String userInput;
 
             Console.Clear();
@@ -419,10 +421,10 @@ namespace Project_1 {
             do {
                 // GUI element
                 Console.Clear();
-                Console.WriteLine("Employee Remove Page\n");
+                Console.WriteLine("Schedule Lookup Page\n");
 
                 // request data
-                Console.Write("Please enter the username of the user to be removed: ");
+                Console.Write("Please enter the username of the user to display the schedule for: ");
                 userInput = Console.ReadLine();
             } while (userInput == "");
 
@@ -430,9 +432,30 @@ namespace Project_1 {
             hospital.GetEmployees().ForEach(emp => {
                 if (emp.GetUsername().ToLower() == userInput.ToLower()) {
                     Console.WriteLine($"\nFound employee: {emp}");
-                    employee = emp;
+
+                    if (emp.GetType().Name.ToString().ToLower() == "doctor") {
+                        doctor = (Doctor)emp;
+
+                        Console.WriteLine($"\nSchedule for {doctor}:\n");
+                        // fetch and display employee data
+                        doctor.GetDutyList().ForEach(duty => {
+                            Console.WriteLine($"{doctor.GetDutyList().IndexOf(duty) + 1}. {duty}");
+                        });
+                    } else if (emp.GetType().Name.ToString().ToLower() == "nurse") {
+                        nurse = (Nurse)emp;
+
+                        Console.WriteLine($"\nSchedule for {nurse}:\n");
+                        // fetch and display employee data
+                        nurse.GetDutyList().ForEach(duty => {
+                            Console.WriteLine($"{nurse.GetDutyList().IndexOf(duty) + 1}. {duty}");
+                        });
+                    }
                 }
             });
+
+            // further action
+            Console.WriteLine("\nPress any key to continue.");
+            Console.ReadKey();
 
             // return to start menu
             StartMenu(currentLogin);

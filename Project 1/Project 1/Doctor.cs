@@ -22,7 +22,7 @@ namespace Project_1 {
             return $"Doctor: {GetName()} {GetSurName()}, specialty: {specialty.ToLower()}, PWZ: {PWZ}";
         }
 
-        public void AddDuty(Duty duty) {
+        public override void AddDuty(Duty duty) {
             // TODO
             // check if duty date is not overlapping with existing duties by a day
             // check if duty date is not in the past
@@ -33,10 +33,6 @@ namespace Project_1 {
 
         public List<Duty> GetDutyList() {
             return duties;
-        }
-
-        public void EditDutyList(List<Duty> duties) {
-            this.duties = duties;
         }
     }
 }

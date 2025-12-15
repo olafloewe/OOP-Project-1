@@ -11,5 +11,9 @@ namespace Project_1 {
             this.date = date;
             this.staff = staff;
         }
+
+        public override string ToString() {
+            return $"{staff} | {date.ToShortDateString()}";
+        }
     }
 }

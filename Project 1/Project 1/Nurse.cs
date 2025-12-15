@@ -14,7 +14,7 @@ namespace Project_1 {
             return $"Nurse: {GetName()} {GetSurName()}";
         }
 
-        public void AddDuty(Duty duty) {
+        public override void AddDuty(Duty duty) {
             // TODO
             // check if duty date is not overlapping with existing duties by a day
             // check if duty date is not in the past
@@ -23,7 +23,7 @@ namespace Project_1 {
             duties.Add(duty);
         }
 
-        public List<Duty> DutyList() {
+        public List<Duty> GetDutyList() {
             return duties;
         }
     }
