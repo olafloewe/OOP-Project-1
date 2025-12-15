@@ -12,50 +12,50 @@ namespace Project_1 {
         string password;
 
         public Employee(string name, string surname, long pesel, string username, string password) {
-            this.setName(name);
-            this.setSurName(surname);
-            this.setPesel(pesel);
-            this.setUsername(username);
-            this.setPassword(password);
+            this.SetName(name);
+            this.SetSurName(surname);
+            this.SetPesel(pesel);
+            this.SetUsername(username);
+            this.SetPassword(password);
         }
 
-        protected void setName(string name) {
+        protected void SetName(string name) {
             this.name = name;
         }
 
-        public string getName() {
+        public string GetName() {
             return name;
         }
 
-        protected void setSurName(string surName) {
+        protected void SetSurName(string surName) {
             this.surName = surName;
         }
 
-        public string getSurName() {
+        public string GetSurName() {
             return surName;
         }
 
-        protected void setPesel(long pesel) {
+        protected void SetPesel(long pesel) {
             this.pesel = pesel;
         }
 
-        public long getPesel() {
+        public long GetPesel() {
             return pesel;
         }
 
-        protected void setUsername(string username) {
+        protected void SetUsername(string username) {
             this.username = username;
         }
 
-        public string getUsername() {
+        public string GetUsername() {
             return username;
         }
 
-        protected void setPassword(string password) {
+        protected void SetPassword(string password) {
             this.password = password;
         }
 
-        public string getPassword() {
+        public string GetPassword() {
             return password;
         }
 

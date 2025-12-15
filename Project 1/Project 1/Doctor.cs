@@ -9,7 +9,7 @@ namespace Project_1 {
     [Serializable]
     public class Doctor : Employee {
 
-        string[] specialties = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };
+        readonly string[] specialties = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };
         List<Duty> duties = new List<Duty>();
         int PWZ;
         string specialty;
@@ -22,7 +22,7 @@ namespace Project_1 {
         }
 
         public override string ToString() {
-            return $"Doctor: {getName()} {getSurName()}, specialty: {specialty.ToLower()}, PWZ: {PWZ}";
+            return $"Doctor: {GetName()} {GetSurName()}, specialty: {specialty.ToLower()}, PWZ: {PWZ}";
         }
 
         public void AddDuty(Duty duty) {

@@ -50,7 +50,7 @@ namespace Project_1 {
         private static void StartMenu(Employee emp) {
             // welcome user
             Console.Clear();
-            Console.WriteLine($"Welcome {emp.getName()} {emp.getSurName()}({emp.GetType().Name})!\n"); // this looks better here than ToString() override
+            Console.WriteLine($"Welcome {emp.GetName()} {emp.GetSurName()}({emp.GetType().Name})!\n"); // this looks better here than ToString() override
 
             // create delegates for each page
             Dictionary<String, Delegate> link = new Dictionary<String, Delegate>();
@@ -99,8 +99,7 @@ namespace Project_1 {
             } while (!inputChars.Contains(key));
 
             // parse key to string
-            int result;
-            if (!int.TryParse(key.ToString(), out result)) throw new Exception("Oops, something went wrong with parsing your int.");
+            if (!int.TryParse(key.ToString(), out int result)) throw new Exception("Oops, something went wrong with parsing your int.");
 
             return result;
         }
@@ -167,7 +166,7 @@ namespace Project_1 {
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.getUsername().ToLower() == usernameInput.ToLower()) {
+                    if (emp.GetUsername().ToLower() == usernameInput.ToLower()) {
                         Console.WriteLine($"\nUsername allready taken");
                         usernameTaken = true;
                     }
@@ -242,7 +241,7 @@ namespace Project_1 {
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.getUsername().ToLower() == userInput.ToLower()) {
+                    if (emp.GetUsername().ToLower() == userInput.ToLower()) {
                         Console.WriteLine($"\nFound employee: {emp}");
                         employee = emp;
                     }
@@ -292,7 +291,7 @@ namespace Project_1 {
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.getUsername().ToLower() == userInput.ToLower()) {
+                    if (emp.GetUsername().ToLower() == userInput.ToLower()) {
                         Console.WriteLine($"\nFound employee: {emp}");
                         employee = emp;
                     }
@@ -350,7 +349,7 @@ namespace Project_1 {
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.getUsername().ToLower() == userInput.ToLower()) {
+                    if (emp.GetUsername().ToLower() == userInput.ToLower()) {
                         Console.WriteLine($"\nFound employee: {emp}");
                         employee = emp;
                     }

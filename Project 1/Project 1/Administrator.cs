@@ -12,7 +12,7 @@ namespace Project_1 {
 
 
         public override string ToString() {
-            return $"Admin: {getName()} {getSurName()}";
+            return $"Admin: {GetName()} {GetSurName()}";
         }
     }
 }

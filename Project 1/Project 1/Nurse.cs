@@ -15,7 +15,7 @@ namespace Project_1 {
         }
 
         public override string ToString() {
-            return $"Nurse: {getName()} {getSurName()}";
+            return $"Nurse: {GetName()} {GetSurName()}";
         }
 
         public void AddDuty(Duty duty) {

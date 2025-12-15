@@ -34,7 +34,7 @@ namespace Project_1 {
             // check wether username is taken allready
             try {
                 hospital.GetEmployees().ForEach(e => {
-                    if (e.getUsername().ToLower() == emp.getUsername().ToLower()) throw new Exception("Username allready taken");
+                    if (e.GetUsername().ToLower() == emp.GetUsername().ToLower()) throw new Exception("Username allready taken");
                 });
                 // no exception thrown, add employee
                 employees.Add(emp);
@@ -47,7 +47,7 @@ namespace Project_1 {
             // check wether username is taken allready
             try {
                 hospital.GetEmployees().ForEach(e => {
-                    if (e.getUsername().ToLower() == emp.getUsername().ToLower()) {
+                    if (e.GetUsername().ToLower() == emp.GetUsername().ToLower()) {
                         employees.Remove(e);
                     }
                 });
