@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-using Project_1;
 
 namespace Project_1 {
     [Serializable]
