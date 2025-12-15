@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -56,18 +57,25 @@ namespace Project_1 {
             Dictionary<String, Delegate> link = new Dictionary<String, Delegate>();
 
             // adds delegates and arguments to dictionary
+
+            // nurse and doctor commands
+            if (emp.GetType().Name.ToString().ToLower() == "nurse" || emp.GetType().Name.ToString().ToLower() == "doctor") {
+                link.Add("This months schedule", new Delegate(ThisMonthsSchedule));
+            }
+
+            // commands for all employees
+            link.Add("Employee List", new Delegate(EmployeeList));
+            link.Add("Employee Lookup", new Delegate(EmployeeLookUp));
+            link.Add("Schedule Lookup", new Delegate(ScheduleLookUp));
+
             // admin commands
             if (emp.GetType().Name.ToString().ToLower() == "administrator") {
-                link.Add("Employee List", new Delegate(EmployeeList));
                 link.Add("Employee Add", new Delegate(EmployeeAdd));
                 link.Add("Employee Remove", new Delegate(EmployeeRemove));
                 link.Add("Employee Edit", new Delegate(EmployeeEdit));
                 link.Add("Schedule Edit", new Delegate(ScheduleEdit));
             }
-            // nurse and doctor commands
-            link.Add("This months schedule", new Delegate(ThisMonthsSchedule));
-            link.Add("Employee Lookup", new Delegate(EmployeeLookUp));
-            link.Add("Schedule Lookup", new Delegate(ScheduleLookUp));
+
             link.Add("Log out", new Delegate(LogOut));
 
             // asks user to select a page
@@ -277,32 +285,60 @@ namespace Project_1 {
             string userInput;
             Employee employee = null;
 
+            // GUI
+            Console.Clear();
+            Console.WriteLine("Schedule Edit Page\n");
+
             // repeat until employee found or user exits
             do {
-                // dont accept empty input
                 userInput = ReadStringInput("Please enter a username to edit schedule for: ");
-
                 employee = FetchEmployeeByUsername(userInput);
 
                 // failed search
                 if (employee == null) Console.WriteLine("\nEmployee not found.");
+                // check if employee is Nurse or Doctor
+                if ((employee.GetType().Name.ToString().ToLower() == "administrator" || employee.GetType().Name.ToString().ToLower() == "nurse")) {
+                    Console.WriteLine("\nEmployee is not a nurse or a doctor.");
+                    employee = null;
+                }
             } while (employee == null);
 
-            // TODO
-            // DUTY ADD 
-            // DUTY REMOVE 
+            // GUI
+            Console.Clear();
+            Console.WriteLine("Schedule Edit Page");
 
+            Console.WriteLine($"\nSelect an action for: {employee}\n");
+            
+            Console.WriteLine("1. Add Duty\n2. Remove Duty");
+            ConsoleKey input = Console.ReadKey().Key;
+            
+            // TODO
+            if(input == ConsoleKey.D1) DutyAdd(employee);
+            if(input == ConsoleKey.D2) DutyRemove(employee);
 
             // return to start menu
             StartMenu(currentLogin);
         }
 
         private static void DutyAdd(Employee emp) {
+            string userInput;
+            DateTime dutyDate;
+            // GUI
             Console.Clear();
             Console.WriteLine("Duty add Page\n");
 
-            Console.WriteLine("Please enter either a Nurses or a Doctors username to add a duty for: ");
-            Console.ReadLine();
+            // repeat until valid date input
+            do {
+                userInput = ReadStringInput("Please enter a date for the duty to be added (please use\"DD-MM-YYYY\"): ");
+            } while (DateTime.TryParseExact(userInput, "dd-MM-yyyy", null, DateTimeStyles.None, out dutyDate));
+
+            Console.WriteLine($"\nInput: {userInput}");
+
+            Console.WriteLine($"\nDuty added for {emp.GetUsername()} on {dutyDate} / {DateTime.Now.Date}");
+
+            // further action
+            Console.WriteLine("\nPress any key to continue.");
+            Console.ReadKey();
 
             // return to start menu
             StartMenu(currentLogin);
@@ -311,6 +347,10 @@ namespace Project_1 {
         private static void DutyRemove(Employee emp) {
             Console.Clear();
             Console.WriteLine("Duty remove Page\n");
+
+            // further action
+            Console.WriteLine("\nPress any key to continue.");
+            Console.ReadKey();
 
             // return to start menu
             StartMenu(currentLogin);
@@ -329,6 +369,7 @@ namespace Project_1 {
                 // GUI element
                 Console.Clear();
                 Console.WriteLine("Employee Lookup Page\n");
+
                 // dont accept empty input
                 userInput = ReadStringInput("Please enter a username to look up: ");
 
