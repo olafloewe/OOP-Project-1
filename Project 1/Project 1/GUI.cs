@@ -321,20 +321,39 @@ namespace Project_1 {
         }
 
         private static void DutyAdd(Employee emp) {
-            string userInput;
+            string dayInput;
+            string monthInput;
+            string yearInput;
             DateTime dutyDate;
+            bool validDate = false;
+
             // GUI
             Console.Clear();
             Console.WriteLine("Duty add Page\n");
 
             // repeat until valid date input
             do {
-                userInput = ReadStringInput("Please enter a date for the duty to be added (please use\"DD-MM-YYYY\"): ");
-            } while (DateTime.TryParseExact(userInput, "dd-MM-yyyy", null, DateTimeStyles.None, out dutyDate));
+                // data input loop
+                do { dayInput = ReadStringInput("Please enter day: "); } while (dayInput == "");
+                do { monthInput = ReadStringInput("Please enter month: "); } while (monthInput == "");
+                do { yearInput = ReadStringInput("Please enter year: "); } while (yearInput == "");
 
-            Console.WriteLine($"\nInput: {userInput}");
+                // parse and validate date
+                try {
+                    DateTime.TryParse($"{dayInput}/{monthInput}/{yearInput} 00:00:00 AM", out dutyDate);
 
-            Console.WriteLine($"\nDuty added for {emp.GetUsername()} on {dutyDate} / {DateTime.Now.Date}");
+                    Console.WriteLine($"\nInput: {dutyDate}");
+                    Console.WriteLine($"\nDuty added for {emp.GetUsername()} on {dutyDate} / {DateTime.Now.Date}");
+
+                    if (DateTime.Now.CompareTo(dutyDate) != -1) throw new Exception("Date is not in the future");
+                    validDate = true;
+                } catch (Exception e) {
+                    Console.Clear();
+                    Console.WriteLine("Duty add Page\n");
+
+                    Console.WriteLine(e.Message);
+                }
+            } while (!validDate);
 
             // further action
             Console.WriteLine("\nPress any key to continue.");
@@ -390,8 +409,30 @@ namespace Project_1 {
         }
 
         private static void ScheduleLookUp() {
+            Employee employee;
+            String userInput;
+
             Console.Clear();
             Console.WriteLine("Schedule Lookup Page\n");
+
+            // dont accept empty input
+            do {
+                // GUI element
+                Console.Clear();
+                Console.WriteLine("Employee Remove Page\n");
+
+                // request data
+                Console.Write("Please enter the username of the user to be removed: ");
+                userInput = Console.ReadLine();
+            } while (userInput == "");
+
+            // fetch employee data
+            hospital.GetEmployees().ForEach(emp => {
+                if (emp.GetUsername().ToLower() == userInput.ToLower()) {
+                    Console.WriteLine($"\nFound employee: {emp}");
+                    employee = emp;
+                }
+            });
 
             // return to start menu
             StartMenu(currentLogin);
@@ -403,19 +444,6 @@ namespace Project_1 {
 
             // return to start menu
             StartMenu(currentLogin);
-        }
-
-        // return to login page
-        private static void LogOut() {
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            // save data after logout
-            using (FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write)) {
-                formatter.Serialize(fs, hospital);
-            }
-
-            // return to login page
-            Login();
         }
 
         private static Employee FetchEmployeeByUsername(string username) {
@@ -430,6 +458,19 @@ namespace Project_1 {
             });
 
             return employee;
+        }
+
+        // return to login page
+        private static void LogOut() {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            // save data after logout
+            using (FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write)) {
+                formatter.Serialize(fs, hospital);
+            }
+
+            // return to login page
+            Login();
         }
     }
 }
