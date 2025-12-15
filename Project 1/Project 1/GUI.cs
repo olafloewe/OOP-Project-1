@@ -326,6 +326,8 @@ namespace Project_1 {
             DateTime dutyDate;
             bool validDate = false;
 
+            // TODO check parameters day +- / 10per month before adding duty
+           
             if (emp.GetType().Name.ToLower() == "doctor") emp = (Doctor)emp;
             if (emp.GetType().Name.ToLower() == "nurse") emp = (Nurse)emp;
 
@@ -470,6 +472,10 @@ namespace Project_1 {
             currentLogin.GetDutyList().ForEach(duty => {
                 Console.WriteLine($"{currentLogin.GetDutyList().IndexOf(duty) + 1}. {duty}");
             });
+
+            // further action
+            Console.WriteLine("\nPress any key to continue.");
+            Console.ReadKey();
 
             // return to start menu
             StartMenu(currentLogin);
