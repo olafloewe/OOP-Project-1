@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Project_1 {
     [Serializable]
@@ -63,6 +64,10 @@ namespace Project_1 {
             return false;
         }
         public virtual void AddDuty(Duty duty) {
+        }
+
+        public virtual List<Duty> GetDutyList() {
+            return null;
         }
     }
 }

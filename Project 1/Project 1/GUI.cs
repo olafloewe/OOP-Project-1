@@ -465,6 +465,12 @@ namespace Project_1 {
             Console.Clear();
             Console.WriteLine("This Months Schedule Page\n");
 
+            Console.WriteLine($"\nSchedule for {currentLogin}:\n");
+            // fetch and display employee data
+            currentLogin.GetDutyList().ForEach(duty => {
+                Console.WriteLine($"{currentLogin.GetDutyList().IndexOf(duty) + 1}. {duty}");
+            });
+
             // return to start menu
             StartMenu(currentLogin);
         }

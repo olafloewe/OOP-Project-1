@@ -23,7 +23,7 @@ namespace Project_1 {
             duties.Add(duty);
         }
 
-        public List<Duty> GetDutyList() {
+        public override List<Duty> GetDutyList() {
             return duties;
         }
     }
