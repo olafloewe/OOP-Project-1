@@ -31,8 +31,12 @@ namespace Project_1 {
             duties.Add(duty);
         }
 
-        public List<Duty> DutyList() {
+        public List<Duty> GetDutyList() {
             return duties;
+        }
+
+        public void EditDutyList(List<Duty> duties) {
+            this.duties = duties;
         }
     }
 }

@@ -119,11 +119,11 @@ namespace Project_1 {
         private static void EmployeeList() {
             Console.Clear();
             Console.WriteLine("Employee List Page\n");
+            int i = 1;
 
             // fetch and display employee data
             hospital.GetEmployees().ForEach(emp => {
-                // TODO incremental index display instead of index in list
-                if (emp.GetType().Name.ToString().ToLower() != "administrator") Console.WriteLine($"{hospital.GetEmployees().IndexOf(emp) + 1}. {emp}");
+                if (emp.GetType().Name.ToString().ToLower() != "administrator") Console.WriteLine($"{i++}. {emp}");
             });
 
             // confirmation before returning
@@ -280,22 +280,9 @@ namespace Project_1 {
             // repeat until employee found or user exits
             do {
                 // dont accept empty input
-                do {
-                    Console.Clear();
-                    Console.WriteLine("Schedule Edit Page\n");
+                userInput = ReadStringInput("Please enter a username to edit schedule for: ");
 
-                    // request data
-                    Console.Write("Please enter a username: ");
-                    userInput = Console.ReadLine();
-                } while (userInput == "");
-
-                // fetch employee data
-                hospital.GetEmployees().ForEach(emp => {
-                    if (emp.GetUsername().ToLower() == userInput.ToLower()) {
-                        Console.WriteLine($"\nFound employee: {emp}");
-                        employee = emp;
-                    }
-                });
+                employee = FetchEmployeeByUsername(userInput);
 
                 // failed search
                 if (employee == null) Console.WriteLine("\nEmployee not found.");
@@ -313,6 +300,9 @@ namespace Project_1 {
         private static void DutyAdd(Employee emp) {
             Console.Clear();
             Console.WriteLine("Duty add Page\n");
+
+            Console.WriteLine("Please enter either a Nurses or a Doctors username to add a duty for: ");
+            Console.ReadLine();
 
             // return to start menu
             StartMenu(currentLogin);
@@ -336,24 +326,14 @@ namespace Project_1 {
 
             // repeat until employee found or user exits
             do {
+                // GUI element
+                Console.Clear();
+                Console.WriteLine("Employee Lookup Page\n");
                 // dont accept empty input
-                do {
-                    // GUI element
-                    Console.Clear();
-                    Console.WriteLine("Employee Lookup Page\n");
-
-                    // request data
-                    Console.Write("Please enter a username: ");
-                    userInput = Console.ReadLine();
-                } while (userInput == "");
+                userInput = ReadStringInput("Please enter a username to look up: ");
 
                 // fetch employee data
-                hospital.GetEmployees().ForEach(emp => {
-                    if (emp.GetUsername().ToLower() == userInput.ToLower()) {
-                        Console.WriteLine($"\nFound employee: {emp}");
-                        employee = emp;
-                    }
-                });
+                employee = FetchEmployeeByUsername(userInput);
 
                 // failed search
                 if (employee == null) Console.WriteLine("\nEmployee not found.");
@@ -395,6 +375,20 @@ namespace Project_1 {
 
             // return to login page
             Login();
+        }
+
+        private static Employee FetchEmployeeByUsername(string username) {
+            Employee employee = null;
+
+            // fetch employee data
+            hospital.GetEmployees().ForEach(emp => {
+                if (emp.GetUsername().ToLower() == username.ToLower()) {
+                    Console.WriteLine($"\nFound employee: {emp}");
+                    employee = emp;
+                }
+            });
+
+            return employee;
         }
     }
 }
