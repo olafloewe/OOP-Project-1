@@ -51,9 +51,5 @@ namespace Project_1 {
                 Console.WriteLine(e.Message);
             }
         }
-
-        public override string ToString() {
-            return "TESTING";
-        }
     }
 }
