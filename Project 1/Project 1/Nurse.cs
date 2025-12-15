@@ -10,17 +10,15 @@ namespace Project_1 {
     public class Nurse : Employee {
         List<Duty> duties = new List<Duty>();
 
-        public Nurse(string name, string surname, long pesel, string username, string password) : base(name, surname, pesel, username, password){
+        public Nurse(string name, string surname, long pesel, string username, string password) : base(name, surname, pesel, username, password) {
 
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return $"Nurse: {getName()} {getSurName()}";
         }
 
-        public void AddDuty(Duty duty)
-        {
+        public void AddDuty(Duty duty) {
             // TODO
             // check if duty date is not overlapping with existing duties by a day
             // check if duty date is not in the past
@@ -29,8 +27,7 @@ namespace Project_1 {
             duties.Add(duty);
         }
 
-        public List<Duty> DutyList()
-        {
+        public List<Duty> DutyList() {
             return duties;
         }
     }

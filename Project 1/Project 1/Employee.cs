@@ -58,9 +58,9 @@ namespace Project_1 {
         public string getPassword() {
             return password;
         }
-        
+
         public bool Login(string username, string password) {
-            if ( username.ToLower() == this.username.ToLower() && password == this.password) return true;
+            if (username.ToLower() == this.username.ToLower() && password == this.password) return true;
             return false;
         }
     }

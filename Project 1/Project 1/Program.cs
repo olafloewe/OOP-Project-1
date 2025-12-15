@@ -24,14 +24,13 @@ namespace Project_1 {
              */
 
             BinaryFormatter formatter = new BinaryFormatter();
-            
+
             // load data
-            try{
-                using (FileStream fs = new FileStream("data.txt", FileMode.Open, FileAccess.Read)){
+            try {
+                using (FileStream fs = new FileStream("data.txt", FileMode.Open, FileAccess.Read)) {
                     hospital = (Hospital)formatter.Deserialize(fs);
                 }
-            }
-            catch (FileNotFoundException){
+            } catch (FileNotFoundException) {
                 Console.WriteLine("No data file found, starting new hospital");
                 hospital = Hospital.GetHospital();
                 hospital.AddEmployee(new Administrator("admin", "admin", 0, "admin", "admin"));
