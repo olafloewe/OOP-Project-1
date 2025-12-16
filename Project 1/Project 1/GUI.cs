@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Forms;
 
 namespace Project_1 {
     [Serializable]
@@ -274,8 +275,81 @@ namespace Project_1 {
         }
 
         private static void EmployeeEdit() {
+            // SendKeys.SendWait("hello"); //hello text will be editable :)
+            bool usernameTaken;
+            string nameInput;
+            string surnameInput;
+            long peselInput;
+            string usernameInput;
+            string passwordInput;
+            int empTypeSelection;
+            int specialtySelection;
+            int pwzInput;
+            Employee newEmployee;
+
             Console.Clear();
             Console.WriteLine("Employee Edit Page\n");
+
+            string[] employeeType = new string[] { "Administrator", "Doctor", "Nurse" };
+            string[] specialties = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };
+
+            // request data
+            nameInput = ReadStringInput("Please enter a employee name: ");
+            surnameInput = ReadStringInput("Please enter a employee Surname: ");
+            while (!long.TryParse(ReadStringInput("Please enter a employee pesel: "), out peselInput)) ;
+
+            // repeat until username is unique
+            do {
+                usernameTaken = false;
+                usernameInput = ReadStringInput("Please enter a employee username: ");
+
+                // fetch employee data
+                hospital.GetEmployees().ForEach(emp => {
+                    if (emp.GetUsername().ToLower() == usernameInput.ToLower()) {
+                        Console.WriteLine($"\nUsername allready taken");
+                        usernameTaken = true;
+                    }
+                });
+            } while (usernameTaken);
+
+            passwordInput = ReadStringInput("Please enter a employee password: ");
+
+            // use ReadInput() to choose employee type and specialty
+            Console.WriteLine("Please select employee type:\n");
+            for (int i = 0; i < employeeType.Length; i++) {
+                Console.WriteLine($"{i + 1}. {employeeType[i]}");
+            }
+            empTypeSelection = ReadInput(employeeType.Length, true);
+
+            switch (empTypeSelection) {
+                case 1:
+                    newEmployee = new Administrator(nameInput, surnameInput, peselInput, usernameInput, passwordInput);
+                    break;
+                case 2:
+                    // ask doctor specific data
+                    Console.WriteLine("\nPlease select a specialty:\n");
+                    for (int i = 0; i < specialties.Length; i++) {
+                        Console.WriteLine($"{i + 1}. {specialties[i]}");
+                    }
+                    specialtySelection = ReadInput(specialties.Length, true);
+
+                    // 7 didgit PWZ number
+                    while (!int.TryParse(ReadStringInput("\nPlease enter a PWZ number: "), out pwzInput) || pwzInput < 0 || pwzInput > 9999999) ;
+
+                    newEmployee = new Doctor(nameInput, surnameInput, peselInput, usernameInput, passwordInput, specialties[specialtySelection - 1], pwzInput);
+                    break;
+                case 3:
+                    newEmployee = new Nurse(nameInput, surnameInput, peselInput, usernameInput, passwordInput);
+                    break;
+                default:
+                    throw new Exception("Invalid employee type selection");
+            }
+
+            hospital.AddEmployee(newEmployee);
+
+            // confirmation before returning
+            Console.WriteLine($"Employee ({newEmployee}) edited successfully, press any button to continue!");
+            Console.ReadKey();
 
             // return to start menu
             StartMenu(currentLogin);
@@ -297,7 +371,7 @@ namespace Project_1 {
                 // failed search
                 if (employee == null) Console.WriteLine("\nEmployee not found.");
                 // check if employee is Nurse or Doctor
-                if ((employee.GetType().Name.ToString().ToLower() == "administrator" || employee.GetType().Name.ToString().ToLower() == "nurse")) {
+                else if ((employee.GetType().Name.ToString().ToLower() == "administrator" || employee.GetType().Name.ToString().ToLower() == "nurse")) {
                     Console.WriteLine("\nEmployee is not a nurse or a doctor.");
                     employee = null;
                 }
@@ -326,8 +400,7 @@ namespace Project_1 {
             DateTime dutyDate;
             bool validDate = false;
 
-            // TODO check parameters day +- / 10per month before adding duty
-           
+            // cast employee to correct type
             if (emp.GetType().Name.ToLower() == "doctor") emp = (Doctor)emp;
             if (emp.GetType().Name.ToLower() == "nurse") emp = (Nurse)emp;
 
@@ -342,12 +415,34 @@ namespace Project_1 {
                 do { monthInput = ReadStringInput("Please enter month: "); } while (monthInput == "");
                 do { yearInput = ReadStringInput("Please enter year: "); } while (yearInput == "");
 
-                // parse and validate date
+                // try to add date, catch if something goes wrong
                 try {
+                    // parse date and validate
                     DateTime.TryParse($"{dayInput}/{monthInput}/{yearInput} 00:00:00 AM", out dutyDate);
-
                     if (DateTime.Now.CompareTo(dutyDate) != -1) throw new Exception("Date is not in the future");
                     validDate = true;
+
+                    // TODO check parameters day +- / 10per month before adding duty
+                    Console.WriteLine($"Date: {dutyDate.ToFileTimeUtc()}");
+                    Console.WriteLine($"prev: {dutyDate.AddDays(1).ToFileTimeUtc()} post: {dutyDate.AddDays(-1).ToFileTimeUtc()}");
+
+                    // check for 10 duties per month
+                    int dutyCount = 0;
+                    emp.GetDutyList().ForEach(duty => {
+                        // same month and year
+                        if (duty.GetDate().Month == dutyDate.Month && duty.GetDate().Year == dutyDate.Year) {
+                            dutyCount++;
+                            if(dutyCount >= 10) throw new Exception("Employee already has 10 duties this month and can not be assigned to any more duties.");
+                        }
+                    });
+
+                    // check for duties the day before and after
+                    emp.GetDutyList().ForEach(duty => {
+                        if (dutyDate.ToFileTimeUtc() == duty.GetDate().AddDays(1).ToFileTimeUtc()) throw new Exception("Employee already has a duty on the previous day.");
+                        if (dutyDate.ToFileTimeUtc() == duty.GetDate().AddDays(-1).ToFileTimeUtc()) throw new Exception("Employee already has a duty on the next day.");
+                    });
+
+                    // successfully passed all other checks
                     emp.AddDuty(new Duty(dutyDate, emp));
                     Console.WriteLine($"\nAdd duty executed sucessfully");
                 } catch (Exception e) {
@@ -367,8 +462,42 @@ namespace Project_1 {
         }
 
         private static void DutyRemove(Employee emp) {
-            Console.Clear();
-            Console.WriteLine("Duty remove Page\n");
+            int input;
+            int page = 0;
+
+            // cast employee to correct type
+            if (emp.GetType().Name.ToLower() == "doctor") emp = (Doctor)emp;
+            if (emp.GetType().Name.ToLower() == "nurse") emp = (Nurse)emp;
+
+            do {
+                // GUI
+                Console.Clear();
+                Console.WriteLine("Duty remove Page\n");
+                Console.WriteLine("Select a duty to remove:\n");
+
+                // display duties on pages
+                Console.WriteLine("1. Previous Page");
+                for (int i = 0; i < 7; i++) {
+                    // + (page * 7) in index
+                    if ((page * 7) + i >= emp.GetDutyList().Count()) 
+                        Console.WriteLine($"{(i + 2)}. ");
+                    else 
+                        Console.WriteLine($"{(i + 2)}. {emp.GetDutyList()[(page * 7) + i]}");
+                }
+                Console.WriteLine("9. Next Page");
+
+                input = ReadInput(9);
+
+                // increment pages
+                if (input == 1 && page > 0) page--;
+                if (input == 9 && page < Math.Floor((decimal) emp.GetDutyList().Count() / 7)) page++;
+            } while (input == 1 || input == 9);
+
+            // remove selected duty
+            // -2 to offset for UI and 0 index
+            // page * 7 to offset
+            emp.GetDutyList().RemoveAt((page * 7) + input - 2);
+            Console.WriteLine($"\nDuty removed successfully");
 
             // further action
             Console.WriteLine("\nPress any key to continue.");
@@ -433,8 +562,7 @@ namespace Project_1 {
             // fetch employee data
             hospital.GetEmployees().ForEach(emp => {
                 if (emp.GetUsername().ToLower() == userInput.ToLower()) {
-                    Console.WriteLine($"\nFound employee: {emp}");
-
+                    // check if employee is Nurse or Doctor
                     if (emp.GetType().Name.ToString().ToLower() == "doctor") {
                         doctor = (Doctor)emp;
 
@@ -443,7 +571,8 @@ namespace Project_1 {
                         doctor.GetDutyList().ForEach(duty => {
                             Console.WriteLine($"{doctor.GetDutyList().IndexOf(duty) + 1}. {duty}");
                         });
-                    } else if (emp.GetType().Name.ToString().ToLower() == "nurse") {
+                    }
+                    if (emp.GetType().Name.ToString().ToLower() == "nurse") {
                         nurse = (Nurse)emp;
 
                         Console.WriteLine($"\nSchedule for {nurse}:\n");

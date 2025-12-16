@@ -15,5 +15,18 @@ namespace Project_1 {
         public override string ToString() {
             return $"{staff} | {date.ToShortDateString()}";
         }
+
+        public DateTime GetDate() {
+            return date;
+        }
+        public void SetDate(DateTime date) {
+            this.date = date;
+        }
+        public Employee GetEmployee() {
+            return staff;
+        }
+        public void SetEmployee(Employee staff) {
+            this.staff = staff;
+        }
     }
 }
