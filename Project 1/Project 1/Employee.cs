@@ -19,7 +19,7 @@ namespace Project_1 {
             this.SetPassword(password);
         }
 
-        protected void SetName(string name) {
+        public void SetName(string name) {
             this.name = name;
         }
 
@@ -27,7 +27,7 @@ namespace Project_1 {
             return name;
         }
 
-        protected void SetSurName(string surName) {
+        public void SetSurName(string surName) {
             this.surName = surName;
         }
 
@@ -35,7 +35,7 @@ namespace Project_1 {
             return surName;
         }
 
-        protected void SetPesel(long pesel) {
+        public void SetPesel(long pesel) {
             this.pesel = pesel;
         }
 
@@ -43,7 +43,7 @@ namespace Project_1 {
             return pesel;
         }
 
-        protected void SetUsername(string username) {
+        public void SetUsername(string username) {
             this.username = username;
         }
 
@@ -51,7 +51,7 @@ namespace Project_1 {
             return username;
         }
 
-        protected void SetPassword(string password) {
+        public void SetPassword(string password) {
             this.password = password;
         }
 

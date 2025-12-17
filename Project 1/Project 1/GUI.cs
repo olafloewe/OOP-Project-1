@@ -276,6 +276,7 @@ namespace Project_1 {
 
         private static void EmployeeEdit() {
             // SendKeys.SendWait("hello");
+            string searchInput;
             bool usernameTaken;
             string nameInput;
             string surnameInput;
@@ -285,37 +286,76 @@ namespace Project_1 {
             int empTypeSelection;
             int specialtySelection;
             int pwzInput;
+            Employee employee = null;
             Employee newEmployee;
-
-            Console.Clear();
-            Console.WriteLine("Employee Edit Page\n");
-
             string[] employeeType = new string[] { "Administrator", "Doctor", "Nurse" };
             string[] specialties = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };
 
+            // repeat until employee found or user exits
+            do {
+                // dont accept empty input
+                do {
+                    // GUI element
+                    Console.Clear();
+                    Console.WriteLine("Employee edit Page\n");
+
+                    // request data
+                    Console.Write("Please enter the username of the user to be edited: ");
+                    searchInput = Console.ReadLine();
+                } while (searchInput == "");
+
+                // fetch employee data
+                hospital.GetEmployees().ForEach(emp => {
+                    if (emp.GetUsername().ToLower() == searchInput.ToLower()) {
+                        Console.WriteLine($"\nFound employee: {emp}");
+                        employee = emp;
+                    }
+                });
+
+            } while (employee == null);
+
+            Console.Clear();
+            Console.WriteLine($"Employee edit Page (editing: {employee})\n");
+
             // request data
-            nameInput = ReadStringInput("Please enter an employee name: ");
-            surnameInput = ReadStringInput("Please enter an employee Surname: ");
-            while (!long.TryParse(ReadStringInput("Please enter an employee pesel: "), out peselInput)) ;
+            Console.Write("Please enter an employee name: ");
+            SendKeys.SendWait($"{employee.GetName()}");
+            nameInput = Console.ReadLine();
+
+            Console.Write("Please enter an employee Surname: ");
+            SendKeys.SendWait($"{employee.GetSurName()}");
+            surnameInput = Console.ReadLine();
+
+            string input;
+            do {
+                Console.Write("Please enter an employee pesel: ");
+                SendKeys.SendWait($"{employee.GetPesel()}");
+                input = Console.ReadLine();
+            } while (!long.TryParse(input, out peselInput));
 
             // repeat until username is unique
             do {
                 usernameTaken = false;
-                usernameInput = ReadStringInput("Please enter an employee username: ");
+                Console.Write("Please enter an employee username: ");
+                SendKeys.SendWait($"{employee.GetUsername()}");
+                usernameInput = Console.ReadLine();
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
-                    if (emp.GetUsername().ToLower() == usernameInput.ToLower()) {
-                        Console.WriteLine($"\nUsername allready taken");
+                    if (emp.GetUsername().ToLower() == usernameInput.ToLower() && (emp.GetUsername() != employee.GetUsername())) {
+                            Console.WriteLine($"\nUsername allready taken");
                         usernameTaken = true;
                     }
                 });
             } while (usernameTaken);
 
-            passwordInput = ReadStringInput("Please enter an employee password: ");
+
+            Console.Write("Please enter an employee password: ");
+            SendKeys.SendWait($"{employee.GetPassword()}");
+            passwordInput = Console.ReadLine();
 
             // use ReadInput() to choose employee type and specialty
-            Console.WriteLine("Please select employee type:\n");
+            Console.WriteLine($"Please select employee type for {employee}:\n");
             for (int i = 0; i < employeeType.Length; i++) {
                 Console.WriteLine($"{i + 1}. {employeeType[i]}");
             }
@@ -327,7 +367,7 @@ namespace Project_1 {
                     break;
                 case 2:
                     // ask doctor specific data
-                    Console.WriteLine("\nPlease select a specialty:\n");
+                    Console.WriteLine($"\nPlease select a specialty:\n");
                     for (int i = 0; i < specialties.Length; i++) {
                         Console.WriteLine($"{i + 1}. {specialties[i]}");
                     }
@@ -335,21 +375,62 @@ namespace Project_1 {
 
                     // 7 didgit PWZ number
                     while (!int.TryParse(ReadStringInput("\nPlease enter a PWZ number: "), out pwzInput) || pwzInput < 0 || pwzInput > 9999999) ;
-
                     newEmployee = new Doctor(nameInput, surnameInput, peselInput, usernameInput, passwordInput, specialties[specialtySelection - 1], pwzInput);
+
                     break;
                 case 3:
                     newEmployee = new Nurse(nameInput, surnameInput, peselInput, usernameInput, passwordInput);
+
+                    if (employee.GetType() == newEmployee.GetType()) {
+                        Console.WriteLine("\nNurse unchanged, transferring duties to edited doctor.");
+                    }
+
                     break;
                 default:
                     throw new Exception("Invalid employee type selection");
             }
 
-            hospital.AddEmployee(newEmployee);
+            if (employee.GetType().Name == newEmployee.GetType().Name && employee.GetType().Name.ToString().ToLower() == "doctor") {
+                Doctor oldDoc = (Doctor)employee;
+                Doctor newDoc = (Doctor)newEmployee;
+                // profession unchanged
+                if (oldDoc.GetSpecialty() == newDoc.GetSpecialty()) {
+                    oldDoc.SetName(nameInput);
+                    oldDoc.SetSurName(surnameInput);
+                    oldDoc.SetPesel(peselInput);
+                    oldDoc.SetUsername(usernameInput);
+                    oldDoc.SetPassword(passwordInput);
+                    oldDoc.SetPWZ(newDoc.GetPWZ());
 
-            // confirmation before returning
-            Console.WriteLine($"Employee ({newEmployee}) edited successfully, press any button to continue!");
-            Console.ReadKey();
+                    Console.Clear();
+                    Console.WriteLine($"Employee edit Page\n");
+                    Console.WriteLine($"Employee ({employee}) edited successfully,\n({newEmployee}) will be added to the database");
+                    Console.WriteLine("Press any key to continue.");
+                    Console.ReadKey();
+                }
+                // specialty changed
+                if (oldDoc.GetSpecialty() != newDoc.GetSpecialty()) {
+                    hospital.RemoveEmployee(employee);
+                    hospital.AddEmployee(newEmployee);
+
+                    Console.Clear();
+                    Console.WriteLine($"Employee edit Page\n");
+                    Console.WriteLine($"Employee ({employee}) edited and changed specialty successfully,\n({newEmployee}) will be added to the database");
+                    Console.WriteLine("Press any key to continue.");
+                    Console.ReadKey();
+                }
+            }
+
+            // changed profession
+            if (employee.GetType().Name != newEmployee.GetType().Name) {
+                hospital.RemoveEmployee(employee);
+                hospital.AddEmployee(newEmployee);
+                Console.Clear();
+                Console.WriteLine($"Employee edit Page\n");
+                Console.WriteLine($"Employee ({employee}) edited and changed profession successfully,\n({newEmployee}) will be added to the database");
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey();
+            }
 
             // return to start menu
             StartMenu(currentLogin);
@@ -421,10 +502,6 @@ namespace Project_1 {
                     DateTime.TryParse($"{dayInput}/{monthInput}/{yearInput} 00:00:00 AM", out dutyDate);
                     if (DateTime.Now.CompareTo(dutyDate) != -1) throw new Exception("Date is not in the future");
                     validDate = true;
-
-                    // TODO check parameters day +- / 10per month before adding duty
-                    Console.WriteLine($"Date: {dutyDate.ToFileTimeUtc()}");
-                    Console.WriteLine($"prev: {dutyDate.AddDays(1).ToFileTimeUtc()} post: {dutyDate.AddDays(-1).ToFileTimeUtc()}");
 
                     // check for 10 duties per month
                     int dutyCount = 0;

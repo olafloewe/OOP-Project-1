@@ -22,12 +22,19 @@ namespace Project_1 {
             return $"Doctor: {GetName()} {GetSurName()}, specialty: {specialty.ToLower()}, PWZ: {PWZ}";
         }
 
+        public void SetPWZ(int PWZ) {
+            this.PWZ = PWZ;
+        }
+
+        public int GetPWZ() {
+            return PWZ;
+        }
+
+        public string GetSpecialty() {
+            return specialty;
+        }
+
         public override void AddDuty(Duty duty) {
-            // TODO
-            // check if duty date is not overlapping with existing duties by a day
-            // check if duty date is not in the past
-            // check if no same specialty doctor is on duty that day
-            // check if no more than 10 duties assigned in a month
             duties.Add(duty);
         }
 
