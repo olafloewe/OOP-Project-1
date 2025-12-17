@@ -294,14 +294,14 @@ namespace Project_1 {
             string[] specialties = new string[] { "cardiologist", "urologist", "neurologist", "laryngologist" };
 
             // request data
-            nameInput = ReadStringInput("Please enter a employee name: ");
-            surnameInput = ReadStringInput("Please enter a employee Surname: ");
-            while (!long.TryParse(ReadStringInput("Please enter a employee pesel: "), out peselInput)) ;
+            nameInput = ReadStringInput("Please enter an employee name: ");
+            surnameInput = ReadStringInput("Please enter an employee Surname: ");
+            while (!long.TryParse(ReadStringInput("Please enter an employee pesel: "), out peselInput)) ;
 
             // repeat until username is unique
             do {
                 usernameTaken = false;
-                usernameInput = ReadStringInput("Please enter a employee username: ");
+                usernameInput = ReadStringInput("Please enter an employee username: ");
 
                 // fetch employee data
                 hospital.GetEmployees().ForEach(emp => {
@@ -312,7 +312,7 @@ namespace Project_1 {
                 });
             } while (usernameTaken);
 
-            passwordInput = ReadStringInput("Please enter a employee password: ");
+            passwordInput = ReadStringInput("Please enter an employee password: ");
 
             // use ReadInput() to choose employee type and specialty
             Console.WriteLine("Please select employee type:\n");
