@@ -515,8 +515,21 @@ namespace Project_1 {
 
                     // check for duties the day before and after
                     emp.GetDutyList().ForEach(duty => {
+                        if (dutyDate.ToFileTimeUtc() == duty.GetDate().ToFileTimeUtc()) throw new Exception("Employee already has a duty on the same day.");
                         if (dutyDate.ToFileTimeUtc() == duty.GetDate().AddDays(1).ToFileTimeUtc()) throw new Exception("Employee already has a duty on the previous day.");
                         if (dutyDate.ToFileTimeUtc() == duty.GetDate().AddDays(-1).ToFileTimeUtc()) throw new Exception("Employee already has a duty on the next day.");
+                    });
+
+                    // check for other employees of same type having duty on same day
+                    hospital.GetEmployees().ForEach(otherEmp => {
+                        // check other employees of same type
+                        if (emp.GetType().Name.ToLower() == otherEmp.GetType().Name.ToLower() && emp.GetType().Name.ToLower() == "doctor") {
+                            Doctor otherDoc = (Doctor)otherEmp;
+                            Doctor doc = (Doctor)emp;
+                            otherDoc.GetDutyList().ForEach(duty => {
+                                if (dutyDate.ToFileTimeUtc() == duty.GetDate().ToFileTimeUtc() && doc.GetSpecialty() == otherDoc.GetSpecialty()) throw new Exception($"Another {otherDoc.GetSpecialty()} already has a duty on the same day.");
+                            });
+                        }
                     });
 
                     // successfully passed all other checks
