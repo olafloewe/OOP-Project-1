@@ -606,25 +606,19 @@ namespace Project_1 {
             Employee employee = null;
 
             // repeat until employee found or user exits
-            do {
+            do {                
                 // GUI element
                 Console.Clear();
                 Console.WriteLine("Employee Lookup Page\n");
 
-                // dont accept empty input
-                userInput = ReadStringInput("Please enter a username to look up: ");
-
-                // fetch employee data
+                userInput = ReadStringInput("Please enter a username to edit schedule for: ");
                 employee = FetchEmployeeByUsername(userInput);
 
                 // failed search
                 if (employee == null) Console.WriteLine("\nEmployee not found.");
 
-                // further action
-                Console.WriteLine("\nPress 1. to search again or any other key to quit.");
-                key = Console.ReadKey().Key;
-
-            } while (key == ConsoleKey.D1);
+                Console.ReadKey();
+            } while (employee == null);
 
             // return to start menu
             StartMenu(currentLogin);
