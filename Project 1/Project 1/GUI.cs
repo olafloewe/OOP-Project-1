@@ -47,7 +47,7 @@ namespace Project_1 {
             currentLogin = employee;
             StartMenu(employee);
         }
-
+         
         // start menu after successful login to select options to proceed
         private static void StartMenu(Employee emp) {
             // welcome user
