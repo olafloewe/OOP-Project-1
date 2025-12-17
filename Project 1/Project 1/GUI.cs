@@ -275,7 +275,7 @@ namespace Project_1 {
         }
 
         private static void EmployeeEdit() {
-            // SendKeys.SendWait("hello"); //hello text will be editable :)
+            // SendKeys.SendWait("hello");
             bool usernameTaken;
             string nameInput;
             string surnameInput;
