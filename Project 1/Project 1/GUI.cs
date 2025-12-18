@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -399,15 +398,6 @@ namespace Project_1 {
                 // profession unchanged
                 if (oldDoc.GetSpecialty() == newDoc.GetSpecialty()) {
                     oldDoc.EditData(nameInput, surnameInput, peselInput, usernameInput, passwordInput, newDoc.GetSpecialty(), newDoc.GetPWZ());
-
-                    /*
-                    oldDoc.SetName(nameInput);
-                    oldDoc.SetSurName(surnameInput);
-                    oldDoc.SetPesel(peselInput);
-                    oldDoc.SetUsername(usernameInput);
-                    oldDoc.SetPassword(passwordInput);
-                    oldDoc.SetPWZ(newDoc.GetPWZ());
-                    */
 
                     Console.Clear();
                     Console.WriteLine($"Employee edit Page\n");
