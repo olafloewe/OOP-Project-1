@@ -130,9 +130,12 @@ namespace Project_1 {
             Console.WriteLine("Employee List Page\n");
             int i = 1;
 
+            
             // fetch and display employee data
             hospital.GetEmployees().ForEach(emp => {
-                if (emp.GetType().Name.ToString().ToLower() != "administrator") Console.WriteLine($"{i++}. {emp}");
+                if(currentLogin.GetType().Name.ToString().ToLower() == "administrator")
+                    Console.WriteLine($"{i++}. {emp}");
+                else if (emp.GetType().Name.ToString().ToLower() != "administrator") Console.WriteLine($"{i++}. {emp}");
             });
 
             // confirmation before returning
