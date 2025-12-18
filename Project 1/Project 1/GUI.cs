@@ -385,7 +385,7 @@ namespace Project_1 {
                     newEmployee = new Nurse(nameInput, surnameInput, peselInput, usernameInput, passwordInput);
 
                     if (employee.GetType() == newEmployee.GetType()) {
-                        Console.WriteLine("\nNurse unchanged, transferring duties to edited doctor.");
+                        Console.WriteLine("\nNurse unchanged, transferring duties to edited nurse.");
                     }
 
                     break;
@@ -398,12 +398,16 @@ namespace Project_1 {
                 Doctor newDoc = (Doctor)newEmployee;
                 // profession unchanged
                 if (oldDoc.GetSpecialty() == newDoc.GetSpecialty()) {
+                    oldDoc.EditData(nameInput, surnameInput, peselInput, usernameInput, passwordInput, newDoc.GetSpecialty(), newDoc.GetPWZ());
+
+                    /*
                     oldDoc.SetName(nameInput);
                     oldDoc.SetSurName(surnameInput);
                     oldDoc.SetPesel(peselInput);
                     oldDoc.SetUsername(usernameInput);
                     oldDoc.SetPassword(passwordInput);
                     oldDoc.SetPWZ(newDoc.GetPWZ());
+                    */
 
                     Console.Clear();
                     Console.WriteLine($"Employee edit Page\n");
@@ -605,7 +609,6 @@ namespace Project_1 {
         // looks up employee data based on username
         private static void EmployeeLookUp() {
             string userInput;
-            ConsoleKey key;
             Employee employee = null;
 
             // repeat until employee found or user exits

@@ -17,29 +17,22 @@ namespace Project_1 {
             this.PWZ = PWZ;
             this.specialty = specialty;
         }
-
-        public override string ToString() {
-            return $"Doctor: {GetName()} {GetSurName()}, specialty: {specialty.ToLower()}, PWZ: {PWZ}";
-        }
-
-        public void SetPWZ(int PWZ) {
-            this.PWZ = PWZ;
-        }
-
-        public int GetPWZ() {
-            return PWZ;
-        }
-
-        public string GetSpecialty() {
-            return specialty;
-        }
+        public int GetPWZ() => PWZ;
+        public override List<Duty> GetDutyList() => duties;
+        public string GetSpecialty() => specialty;
 
         public override void AddDuty(Duty duty) {
             duties.Add(duty);
         }
 
-        public override List<Duty> GetDutyList() {
-            return duties;
+        public void EditData(string name, string surname, long pesel, string username, string password, string specialty, int PWZ){
+            this.specialty = specialty;
+            this.PWZ = PWZ;
+            base.EditData(name, surname, pesel, username, password);
+        }
+
+        public override string ToString() {
+            return $"Doctor: {GetName()} {GetSurName()}, specialty: {specialty.ToLower()}, PWZ: {PWZ}";
         }
     }
 }

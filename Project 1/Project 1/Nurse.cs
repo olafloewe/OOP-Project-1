@@ -10,21 +10,14 @@ namespace Project_1 {
 
         }
 
+        public override List<Duty> GetDutyList() => duties;
+
         public override string ToString() {
             return $"Nurse: {GetName()} {GetSurName()}";
         }
 
         public override void AddDuty(Duty duty) {
-            // TODO
-            // check if duty date is not overlapping with existing duties by a day
-            // check if duty date is not in the past
-            // check if no same speciality doctor is on duty that day
-            // check if no more than 10 duties assigned in a month
             duties.Add(duty);
-        }
-
-        public override List<Duty> GetDutyList() {
-            return duties;
         }
     }
 }
